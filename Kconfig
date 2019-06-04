@@ -1,0 +1,16 @@
+
+mainmenu "Example Kconfig configuration"
+
+config MODULES
+	bool "Enable loadable module support"
+	option modules
+	default y
+
+menu "Bool and tristate symbols"
+
+config BOOL
+	bool "Bool symbol"
+	default y
+
+endmenu
+
