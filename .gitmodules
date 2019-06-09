@@ -1,0 +1,3 @@
+[submodule "tools/kconfiglib"]
+	path = tools/kconfiglib
+	url = https://github.com/ulfalizer/Kconfiglib.git
