@@ -1,16 +1,13 @@
 
-mainmenu "Example Kconfig configuration"
+mainmenu "C/CPP CMake project framework Kconfig configuration"
 
-config MODULES
-	bool "Enable loadable module support"
-	option modules
-	default y
-
-menu "Bool and tristate symbols"
-
-config BOOL
-	bool "Bool symbol"
-	default y
-
+menu "Toolchain configuration"
+	config TOOLCHAIN_PATH
+		string "toolchain path"
+		default ""
+	
+	config TOOLCHAIN_PREFIX
+		string "toolchain prefix"
+		default ""
 endmenu
 
