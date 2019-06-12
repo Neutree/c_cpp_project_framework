@@ -11,3 +11,9 @@ menu "Toolchain configuration"
 		default ""
 endmenu
 
+menu "Components configuration"
+	source "$COMPONENT_KCONFIGS"
+endmenu
+
+
+

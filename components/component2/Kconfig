@@ -1,0 +1,25 @@
+menu "Component2 configuration"
+    config COMPONENT2_ENABLED
+        bool "Enable component2"
+        help
+            Select this option to enable component2 and show the submenu.
+    menu "Component2 configuration menu2"
+        visible if COMPONENT2_ENABLED
+        choice COMPONENT2_TEST_STR
+            prompt "Component2 test string"
+            depends on COMPONENT2_ENABLED
+            help
+                Component2 test string in lib2_test func.
+
+            config COMPONENT2_TEST_STR1
+                bool "component2 test string 1"
+
+            config COMPONENT2_TEST_STR2
+                bool "component2 test string 2"
+
+            config COMPONENT2_TEST_STR3
+                bool "component2 test string 3"
+        endchoice
+    endmenu
+endmenu
+
