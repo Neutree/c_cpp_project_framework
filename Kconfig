@@ -12,7 +12,7 @@ menu "Toolchain configuration"
 endmenu
 
 menu "Components configuration"
-	source "$COMPONENT_KCONFIGS"
+	source "$(COMPONENT_KCONFIGS)"
 endmenu
 
 

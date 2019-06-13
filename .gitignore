@@ -57,3 +57,7 @@ build
 .config.old
 
 
+# python
+*.pyc
+__pycache__
+
