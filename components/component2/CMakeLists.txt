@@ -1,19 +1,23 @@
-################# Add include #################
-list(APPEND ADD_INCLUDE "include"
-    )
-list(APPEND ADD_PRIVATE_INCLUDE "include_private")
-###############################################
+# Config enable component2 or not in Kconfig
+if(CONFIG_COMPONENT2_ENABLED)
 
-############## Add source files ###############
-list(APPEND ADD_SRCS  "src/lib2.c"
-    )
-# aux_source_directory(src ADD_SRCS)
-# list(REMOVE_ITEM COMPONENT_SRCS "src/test.c")
-###############################################
+    ################# Add include #################
+    list(APPEND ADD_INCLUDE "include"
+        )
+    list(APPEND ADD_PRIVATE_INCLUDE "include_private")
+    ###############################################
 
-###### Add required/dependent components ######
-list(APPEND ADD_REQUIREMENTS component1)
-###############################################
+    ############## Add source files ###############
+    list(APPEND ADD_SRCS  "src/lib2.c"
+        )
+    # aux_source_directory(src ADD_SRCS)
+    # list(REMOVE_ITEM COMPONENT_SRCS "src/test.c")
+    ###############################################
 
-register_component()
+    ###### Add required/dependent components ######
+    list(APPEND ADD_REQUIREMENTS component1)
+    ###############################################
+
+    register_component()
+endif()
 
