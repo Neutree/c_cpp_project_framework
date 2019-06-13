@@ -1,7 +1,9 @@
-from Kconfiglib.menuconfig import menuconfig
-from Kconfiglib.kconfiglib import Kconfig
 import argparse
 import os, sys
+
+sys.path.append("Kconfiglib")
+from kconfiglib import Kconfig
+from menuconfig import menuconfig
 
 
 def write_config(kconfig, filename):
