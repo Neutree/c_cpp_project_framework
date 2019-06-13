@@ -67,6 +67,22 @@ function(is_path_component ret param_path)
     set(${ret} ${res} PARENT_SCOPE)
 endfunction()
 
+function(get_python python version)
+    set(res 1)
+    execute_process(COMMAND python3 --version RESULT_VARIABLE cmd_res)
+    if(${cmd_res} EQUAL 0)
+        set(${python} python3 PARENT_SCOPE)
+        set(${version} 3 PARENT_SCOPE)
+    else()
+        execute_process(COMMAND python --version RESULT_VARIABLE cmd_res)
+        if(${cmd_res} EQUAL 0)
+            set(${python} python PARENT_SCOPE)
+            set(${version} 2 PARENT_SCOPE)
+        endif()
+    endif()
+endfunction(get_python python)
+
+
 macro(project name)
     
     if(CONFIG_TOOLCHAIN_PATH)
@@ -97,7 +113,7 @@ macro(project name)
             list(APPEND components_dirs ${component_dir})
             if(EXISTS ${component_dir}/Kconfig)
                 message(STATUS "Find component Kconfig of ${base_dir}")
-                list(APPEND kconfig_files ${component_dir}/Kconfig)
+                list(APPEND components_kconfig_files ${component_dir}/Kconfig)
             endif()
             if(EXISTS ${component_dir}/defaults.conf)
                 message(STATUS "Find component defaults config of ${base_dir}")
@@ -119,7 +135,7 @@ macro(project name)
             endif()
             if(EXISTS ${component_dir}/Kconfig)
                 message(STATUS "Find component Kconfig of ${base_dir}")
-                list(APPEND kconfig_files ${component_dir}/Kconfig)
+                list(APPEND components_kconfig_files ${component_dir}/Kconfig)
             endif()
             if(EXISTS ${component_dir}/defaults.conf)
                 message(STATUS "Find component defaults config of ${base_dir}")
@@ -136,6 +152,20 @@ macro(project name)
     endif()
 
     # Generate config file from Kconfig
+    get_python(python python_version)
+    if(NOT python)
+        message(FATAL_ERROR "python not found, please install python firstly(python3 recommend)!")
+    endif()
+    execute_process(COMMAND ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
+                    --kconfig ${SDK_PATH}/Kconfig
+                    --defaults ${kconfig_defaults_files}
+                    --menuconfig False
+                    --env COMPONENT_KCONFIGS=${components_kconfig_files}
+                    --output config ${PROJECT_BINARY_DIR}/config/global_config.conf
+                    --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
+                    --output header ${PROJECT_BINARY_DIR}/config/global_config.h
+                    
+                    RESULT_VARIABLE cmd_res)
 
     # Call CMakeLists.txt
     foreach(component_dir ${components_dirs})

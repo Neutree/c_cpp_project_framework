@@ -112,6 +112,10 @@ if args.menuconfig == "True":
     menuconfig(kconfig)
 
 # write back
+for fmt, filename in out_format.items():
+    dir = os.path.split(filename)[0]
+    if not os.path.exists(dir):
+        os.makedirs(dir)
 
 for fmt, filename in out_format.items():
     func = OUTPUT_FORMATS[fmt]
