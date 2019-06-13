@@ -13,7 +13,11 @@ list(APPEND ADD_SRCS  "src/main.c"
 ###############################################
 
 ###### Add required/dependent components ######
-list(APPEND ADD_REQUIREMENTS component2)
+if(CONFIG_COMPONENT2_ENABLED)
+    list(APPEND ADD_REQUIREMENTS component1 component2)
+else()
+    list(APPEND ADD_REQUIREMENTS component1)
+endif()
 ###############################################
 
 

@@ -45,7 +45,6 @@ function(register_component)
 
     # Add blobal config include
     target_include_directories(${component_name} PUBLIC ${global_config_dir})
-    message(STATUS "=============${global_config_dir}")
 
     # Add requirements
     target_link_libraries(${component_name} ${ADD_REQUIREMENTS})
@@ -165,16 +164,23 @@ macro(project name)
         message(FATAL_ERROR "python not found, please install python firstly(python3 recommend)!")
     endif()
     message(STATUS "python command: ${python}, version: ${python_info_str}")
-    execute_process(COMMAND ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
-                    --kconfig ${SDK_PATH}/Kconfig
-                    --defaults ${kconfig_defaults_files}
-                    --menuconfig False
-                    --env COMPONENT_KCONFIGS=${components_kconfig_files}
-                    --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
-                    --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
-                    --output header ${PROJECT_BINARY_DIR}/config/global_config.h
-                    
-                    RESULT_VARIABLE cmd_res)
+    set(generate_config_cmd ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
+                            --kconfig ${SDK_PATH}/Kconfig
+                            --defaults ${kconfig_defaults_files}
+                            --menuconfig False
+                            --env COMPONENT_KCONFIGS=${components_kconfig_files}
+                            --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
+                            --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
+                            --output header ${PROJECT_BINARY_DIR}/config/global_config.h)
+    set(generate_config_cmd2 ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
+                            --kconfig ${SDK_PATH}/Kconfig
+                            --defaults ${kconfig_defaults_files}
+                            --menuconfig True
+                            --env COMPONENT_KCONFIGS=${components_kconfig_files}
+                            --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
+                            --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
+                            --output header ${PROJECT_BINARY_DIR}/config/global_config.h)
+    execute_process(COMMAND ${generate_config_cmd} RESULT_VARIABLE cmd_res)
 
     # Include confiurations
     set(global_config_dir "${PROJECT_BINARY_DIR}/config")
@@ -192,6 +198,11 @@ macro(project name)
     add_custom_command(OUTPUT ${exe_src} COMMAND ${CMAKE_COMMAND} -E touch ${exe_src} VERBATIM)
     add_custom_target(gen_exe_src DEPENDS "${exe_src}")
     add_dependencies(${name} gen_exe_src)
+
+    # Add menuconfig target for makefile
+    add_custom_target(menuconfig COMMAND ${generate_config_cmd2})
+
+    # Add main component(lib)
     target_link_libraries(${name} main)
 endmacro()
 
