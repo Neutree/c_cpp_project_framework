@@ -28,11 +28,17 @@ make -j10
 * 使用命令 `make menuconfig` 来通过终端图形界面配置工程, 这会在 `build/config` 目录生成几个配置文件（`global_config.*`), 我们可以直接在组件(`component`)的`CMakelists.txt` 文件中直接使用（详细看后面的说明）， 或者在 `C/CPP`源文件中通过语句 `#include "global_config.h"` 包含配置头文件来使用
 * 使用命令 `make` 来执行编译链接过程, 或者并行编译： [make -jN](http://www.gnu.org/software/make/manual/make.html#Parallel)， 以及通过 `make VERBOSE=1` 命令来打印编译时的调试信息
 
+可以点击 `use this template` 按钮来使用这个模板创建一个你自己的 `github` 工程
+
+![](assets/image/use_template.png)
+
+
 ## 目录结构
 
 | 目录/文件       | 功能 |
 | -------------- | -------- |
 | 根目录          | 本项目的根目录，也是 `SDK` 项目的 `SDK` 目录|
+| assets         | 存放多媒体资源的文件夹，比如图片等，如果不需要可以删除 |
 | components     | 组件(component)都放在这里 |
 | examples       | 工程目录，或者例程目录；在 `SDK` 项目中这个目录是可以和 `SDK` 目录分开放的， 只需要设置环境变量`MY_SDK_PATH`为`SDK`目录路径即可 |
 | tools          | 工具目录比如 `cmake`、`kconfig`、`burn tool` etc. |

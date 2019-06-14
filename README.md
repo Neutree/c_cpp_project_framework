@@ -7,7 +7,7 @@ Simple enough to build `C/C++` SDK or projects (`CMake` build system with Kconfi
 
 Based on this project, you can quickly build your project construction system and reduce many unnecessary troubles~
 
-If it helps you, please give a little star in the upper right corner~~ If needs improvement, jsut create an [issue](https://github.com/Neutree/c_cpp_project_framework/issues/new).  `(´ε｀ ʃƪ)♡`
+If it helps you, please give a little star in the upper right corner~~ If needs improvement, just create an [issue](https://github.com/Neutree/c_cpp_project_framework/issues/new).  `(´ε｀ ʃƪ)♡`
 
 
 ## Get Started
@@ -27,12 +27,17 @@ make -j10
 * Config project by command `make menuconfig`, it will generate `global_config` files at `build/config` directory, so we can use it in component's `CMakelists.txt` directly， or in `C/CPP` source files by `#include "global_config.h"`
 * Build project by command `make`, or parallel build with [make -jN](http://www.gnu.org/software/make/manual/make.html#Parallel)， and output verbose build info with command `make VERBOSE=1`
 
+You can create your github repository with this tempalte by click `use this template` button
+
+![](assets/image/use_template.png)
+
 
 ## Structure
 
 | directory/file | function |
 | -------------- | -------- |
 | root directory | root directory of this project, also `SDK` projects' `SDK` directory |
+| assets         | store assets like image etc. you can delete it if not use it |
 | components     | as a component/lib |
 | examples       | project dir or demo dir； `SDK` projects' example/project dir, this directory can be separated from the `SDK` directory, just set environment`MY_SDK_PATH` to `SDK` directory's path. |
 | tools          | tools like `cmake`、`kconfig`、`burn tool` etc. |
