@@ -97,23 +97,9 @@ endfunction(get_python python)
 
 macro(project name)
     
-    if(CONFIG_TOOLCHAIN_PATH)
-        if(NOT IS_DIRECTORY ${CONFIG_TOOLCHAIN_PATH})
-            message(FATAL_ERROR "TOOLCHAIN_PATH set error:${CONFIG_TOOLCHAIN_PATH}")
-        endif()
-        if(WIN32)
-            file(TO_CMAKE_PATH ${CONFIG_TOOLCHAIN_PATH} TOOLCHAIN_PATH)
-            set(CMAKE_C_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc.exe)
-            set(CMAKE_CXX_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}g++.exe)
-            set(CMAKE_ASM_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc.exe)
-        else()
-            set(CMAKE_C_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc)
-            set(CMAKE_CXX_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}g++)
-            set(CMAKE_ASM_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc)
-        endif()
-    endif()
-    
-    _project(${name} ASM C CXX)
+    get_filename_component(current_dir ${CMAKE_CURRENT_LIST_FILE} DIRECTORY)
+    set(PROJECT_SOURCE_DIR ${current_dir})
+    set(PROJECT_BINARY_DIR "${current_dir}/build")
 
     # Find components in SDK's components folder, register components
     file(GLOB component_dirs ${SDK_PATH}/components/*)
@@ -196,6 +182,27 @@ macro(project name)
     # Include confiurations
     set(global_config_dir "${PROJECT_BINARY_DIR}/config")
     include(${global_config_dir}/global_config.cmake)
+
+    # Config toolchain
+    if(CONFIG_TOOLCHAIN_PATH)
+        if(NOT IS_DIRECTORY ${CONFIG_TOOLCHAIN_PATH})
+            message(FATAL_ERROR "TOOLCHAIN_PATH set error:${CONFIG_TOOLCHAIN_PATH}")
+        endif()
+        if(WIN32)
+            file(TO_CMAKE_PATH ${CONFIG_TOOLCHAIN_PATH} TOOLCHAIN_PATH)
+            set(CMAKE_C_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc.exe)
+            set(CMAKE_CXX_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}g++.exe)
+            set(CMAKE_ASM_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc.exe)
+        else()
+            set(CMAKE_C_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc)
+            set(CMAKE_CXX_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}g++)
+            set(CMAKE_ASM_COMPILER ${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc)
+        endif()
+    endif()
+
+    # Declare project
+    _project(${name} ASM C CXX)
+
 
     # Add dependence: update configfile, append time and git info for global config header file
     # we didn't generate build info for cmake and makefile for if we do, it will always rebuild cmake

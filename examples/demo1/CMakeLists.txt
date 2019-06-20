@@ -15,9 +15,9 @@ if(NOT EXISTS ${SDK_PATH})
 endif()
 
 # Get Toolchain path
-if(NOT TOOLCHAIN_PATH)
+if(NOT CONFIG_TOOLCHAIN_PATH)
     if(EXISTS $ENV{MY_TOOLCHAIN_PATH})
-        set(TOOLCHAIN_PATH $ENV{MY_TOOLCHAIN_PATH})
+        set(CONFIG_TOOLCHAIN_PATH $ENV{MY_TOOLCHAIN_PATH})
     endif()
 endif()
 
