@@ -48,6 +48,11 @@ function(register_component)
 
     # Add requirements
     target_link_libraries(${component_name} ${ADD_REQUIREMENTS})
+
+    # Add static lib
+    if(ADD_STATIC_LIB)
+        target_link_libraries(${component_name} "${component_dir}/${ADD_STATIC_LIB}")
+    endif()
 endfunction()
 
 function(is_path_component ret param_path)
@@ -164,11 +169,12 @@ macro(project name)
         message(FATAL_ERROR "python not found, please install python firstly(python3 recommend)!")
     endif()
     message(STATUS "python command: ${python}, version: ${python_info_str}")
+    string(REPLACE ";" " " components_kconfig_files "${components_kconfig_files}")
     set(generate_config_cmd ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
                             --kconfig ${SDK_PATH}/Kconfig
                             --defaults ${kconfig_defaults_files}
                             --menuconfig False
-                            --env COMPONENT_KCONFIGS=${components_kconfig_files}
+                            --env "COMPONENT_KCONFIGS=${components_kconfig_files}"
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
                             --output header ${PROJECT_BINARY_DIR}/config/global_config.h
@@ -177,12 +183,15 @@ macro(project name)
                             --kconfig ${SDK_PATH}/Kconfig
                             --defaults ${kconfig_defaults_files}
                             --menuconfig True
-                            --env COMPONENT_KCONFIGS=${components_kconfig_files}
+                            --env "COMPONENT_KCONFIGS=${components_kconfig_files}"
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
                             --output header ${PROJECT_BINARY_DIR}/config/global_config.h
                             )
     execute_process(COMMAND ${generate_config_cmd} RESULT_VARIABLE cmd_res)
+    if(NOT cmd_res EQUAL 0)
+        message(FATAL_ERROR "Check Kconfig content")
+    endif()
 
     # Include confiurations
     set(global_config_dir "${PROJECT_BINARY_DIR}/config")

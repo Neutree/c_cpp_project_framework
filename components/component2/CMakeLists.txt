@@ -17,6 +17,10 @@ if(CONFIG_COMPONENT2_ENABLED)
     ###### Add required/dependent components ######
     list(APPEND ADD_REQUIREMENTS component1)
     ###############################################
+    
+    ############ Add static libs ##################
+    # list(APPEND ADD_STATIC_LIB "lib/libtest.a")
+    ###############################################
 
     register_component()
 endif()

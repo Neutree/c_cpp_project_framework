@@ -20,6 +20,10 @@ else()
 endif()
 ###############################################
 
+############ Add static libs ##################
+# list(APPEND ADD_STATIC_LIB "lib/libtest.a")
+###############################################
+
 
 register_component()
 

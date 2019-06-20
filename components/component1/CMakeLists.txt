@@ -15,5 +15,11 @@ list(APPEND ADD_SRCS  "src/lib1.c"
 # list(APPEND ADD_REQUIREMENTS component1)
 ###############################################
 
+############ Add static libs ##################
+if(CONFIG_COMPONENT1_INCLUDE_STATIC_LIB)
+    list(APPEND ADD_STATIC_LIB "lib/libtest.a")
+endif()
+###############################################
+
 register_component()
 
