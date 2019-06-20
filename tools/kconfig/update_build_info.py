@@ -111,8 +111,15 @@ def append_time_info(filename, file_type):
     # add tag by command;
     #               git tag -a v0.1.1 -m "release v0.1.1 describe....."
     #               git push origin --tags 
+    git_tag_name = ""
+    version_major = 0
+    version_minor = 0
+    version_dev   = 0
+    version_dev2  = 0
+    git_hash      = ""
+    git_dirty     = ""
     try:
-        git_tag = subprocess.check_output(["git", "describe", "--dirty", "--always"], stderr=subprocess.STDOUT, universal_newlines=True).strip()
+        git_tag = subprocess.check_output(["git", "describe", "--long", "--tag", "--dirty", "--always"], stderr=subprocess.STDOUT, universal_newlines=True).strip()
     except subprocess.CalledProcessError as er:
         if er.returncode == 128:
             # git exit code of 128 means no repository found
@@ -122,13 +129,8 @@ def append_time_info(filename, file_type):
         git_tag = ""
     # git_tag = "v0.3.2-39-gbeae86483-dirty"
     git_tag = git_tag.split("-")
-    git_tag_name = ""
-    version_major = 0
-    version_minor = 0
-    version_dev   = 0
-    version_dev2  = 0
-    git_hash      = ""
-    git_dirty     = ""
+    if len(git_tag) == 0:
+        print("== WARNING: git get info fail")
     if len(git_tag) == 1:       # bdc1dcf
         git_hash = git_tag[0]
     elif len(git_tag) == 2:     # bdc1dcf-dirty or v0.1.1-bdc1dcf
