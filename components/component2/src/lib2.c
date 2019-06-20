@@ -16,5 +16,19 @@ void lib2_test()
 #elif defined CONFIG_COMPONENT2_TEST_STR3
     printf("lib2 test string 3\r\n");
 #endif
+    printf("build time:%d-%d-%d %d:%d:%d\r\n", BUILD_TIME_YEAR, BUILD_TIME_MONTH,  BUILD_TIME_DAY,
+                                         BUILD_TIME_HOUR, BUILD_TIME_MINUTE, BUILD_TIME_SECOND);
+    printf("git info:v%d.%d.%d-%d %s \r\n", BUILD_VERSION_MAJOR, BUILD_VERSION_MINOR, BUILD_VERSION_DEV,
+                                            BUILD_VERSION_DEV2, BUILD_GIT_COMMIT_ID);
+    if(BUILD_VERSION_MAJOR == 0 &&
+       BUILD_VERSION_MINOR == 0 &&
+       BUILD_VERSION_DEV   == 0 &&
+       BUILD_VERSION_DEV2  == 0)
+    {
+        printf("no tag, create by command: git tag -a v0.1.1 -m \"release v0.1.1 describe.....\"\r\n");
+    }
+#if BUILD_GIT_IS_DIRTY
+    printf("WARNING: git repository have file not commit when build\r\n");
+#endif
 }
 

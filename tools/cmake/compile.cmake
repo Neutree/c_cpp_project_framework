@@ -171,7 +171,8 @@ macro(project name)
                             --env COMPONENT_KCONFIGS=${components_kconfig_files}
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
-                            --output header ${PROJECT_BINARY_DIR}/config/global_config.h)
+                            --output header ${PROJECT_BINARY_DIR}/config/global_config.h
+                            )
     set(generate_config_cmd2 ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
                             --kconfig ${SDK_PATH}/Kconfig
                             --defaults ${kconfig_defaults_files}
@@ -179,18 +180,21 @@ macro(project name)
                             --env COMPONENT_KCONFIGS=${components_kconfig_files}
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
-                            --output header ${PROJECT_BINARY_DIR}/config/global_config.h)
+                            --output header ${PROJECT_BINARY_DIR}/config/global_config.h
+                            )
     execute_process(COMMAND ${generate_config_cmd} RESULT_VARIABLE cmd_res)
 
     # Include confiurations
     set(global_config_dir "${PROJECT_BINARY_DIR}/config")
     include(${global_config_dir}/global_config.cmake)
 
-    # Call CMakeLists.txt
-    foreach(component_dir ${components_dirs})
-        get_filename_component(base_dir ${component_dir} NAME)
-        add_subdirectory(${component_dir} ${base_dir})
-    endforeach()
+    # Add dependence: update configfile, append time and git info for global config header file
+    # we didn't generate build info for cmake and makefile for if we do, it will always rebuild cmake
+    # everytime we execute make
+    set(gen_build_info_config_cmd ${python}  ${SDK_PATH}/tools/kconfig/update_build_info.py
+                                  --configfile header ${PROJECT_BINARY_DIR}/config/global_config.h
+                                  )
+    add_custom_target(update_build_info COMMAND ${gen_build_info_config_cmd})
 
     # Create exe_src.c to satisfy cmake's `add_executable` interface!
     set(exe_src ${CMAKE_BINARY_DIR}/exe_src.c)
@@ -198,6 +202,15 @@ macro(project name)
     add_custom_command(OUTPUT ${exe_src} COMMAND ${CMAKE_COMMAND} -E touch ${exe_src} VERBATIM)
     add_custom_target(gen_exe_src DEPENDS "${exe_src}")
     add_dependencies(${name} gen_exe_src)
+    
+
+    # Call CMakeLists.txt
+    foreach(component_dir ${components_dirs})
+        get_filename_component(base_dir ${component_dir} NAME)
+        add_subdirectory(${component_dir} ${base_dir})
+        add_dependencies(${base_dir} update_build_info) # add build info dependence
+    endforeach()
+    
 
     # Add menuconfig target for makefile
     add_custom_target(menuconfig COMMAND ${generate_config_cmd2})
