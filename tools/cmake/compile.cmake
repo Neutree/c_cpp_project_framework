@@ -160,7 +160,8 @@ macro(project name)
                             --kconfig ${SDK_PATH}/Kconfig
                             --defaults ${kconfig_defaults_files}
                             --menuconfig False
-                            --env "COMPONENT_KCONFIGS=${components_kconfig_files}"
+                            --env "SDK_PATH=${SDK_PATH}"
+                            --env "PROJECT_PATH=${PROJECT_SOURCE_DIR}"
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
                             --output header ${PROJECT_BINARY_DIR}/config/global_config.h
@@ -169,7 +170,8 @@ macro(project name)
                             --kconfig ${SDK_PATH}/Kconfig
                             --defaults ${kconfig_defaults_files}
                             --menuconfig True
-                            --env "COMPONENT_KCONFIGS=${components_kconfig_files}"
+                            --env "SDK_PATH=${SDK_PATH}"
+                            --env "PROJECT_PATH=${PROJECT_SOURCE_DIR}"
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
                             --output header ${PROJECT_BINARY_DIR}/config/global_config.h
