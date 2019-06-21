@@ -3,7 +3,8 @@ C CPP Project Framework (Template)
 
 [English](./README.md)
 
-一个足够简单易用的用于构建 `C/C++` 的模板工程(使用 `CMake` 构建，并且支持 `Kconfig`)
+一个足够 **简单易用** 并且 **可配置的**用于构建 `C/C++` 的模板工程
+> 使用 `CMake` 构建，并且支持带`GUI`配置界面的 `Kconfig`
 
 基于此工程，可以快速搭建你的项目构建系统，减少许多不必要的麻烦～
 
@@ -15,6 +16,7 @@ C CPP Project Framework (Template)
 
 ```
 cd examples/demo1
+# python config.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf-
 mkdir build && cd build
 cmake ..
 make menuconfig
@@ -23,6 +25,7 @@ make -j10
 ```
 
 * 切换工程目录
+* 设置工具链路径以及前缀（如果使用`gcc`不需要设置）
 * 建立一个临时目录并且切换当前路径到这个临时目录（`build`）
 * 使用命令 `cmake ..` 来生成 `Makefile`, 这里 `..` 表示上层目录，即项目的目录
 * 使用命令 `make menuconfig` 来通过终端图形界面配置工程, 这会在 `build/config` 目录生成几个配置文件（`global_config.*`), 我们可以直接在组件(`component`)的`CMakelists.txt` 文件中直接使用（详细看后面的说明）， 或者在 `C/CPP`源文件中通过语句 `#include "global_config.h"` 包含配置头文件来使用

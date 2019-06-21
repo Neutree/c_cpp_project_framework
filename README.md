@@ -3,7 +3,8 @@ C CPP Project Framework (Template)
 
 [中文](./README_ZH.md)
 
-Simple enough to build `C/C++` SDK or projects (`CMake` build system with Kconfig support)
+**Simple** and **configurable** `C/C++` project/SDK template 
+> `CMake` build system and support Kconfig with `GUI` configuration
 
 Based on this project, you can quickly build your project construction system and reduce many unnecessary troubles~
 
@@ -14,6 +15,7 @@ If it helps you, please give a little star in the upper right corner~~ If needs 
 
 ```
 cd examples/demo1
+# python config.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf-
 mkdir build && cd build
 cmake ..
 make menuconfig
@@ -22,6 +24,7 @@ make -j10
 ```
 
 * Change dir to project directory
+* Set toolchain path(don't need set if use `gcc`)
 * Make a temporary directory and switch the current path to this directory(`build`)
 * Generate makefile by command `cmake ..`, `..` means the project directory
 * Config project by command `make menuconfig`, it will generate `global_config` files at `build/config` directory, so we can use it in component's `CMakelists.txt` directly， or in `C/CPP` source files by `#include "global_config.h"`

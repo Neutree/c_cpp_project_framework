@@ -115,7 +115,7 @@ macro(project name)
             endif()
             if(EXISTS ${component_dir}/config_defaults.mk)
                 message(STATUS "Find component defaults config of ${base_dir}")
-                list(APPEND kconfig_defaults_files ${component_dir}/config_defaults.mk)
+                list(APPEND kconfig_defaults_files_args --defaults "${component_dir}/config_defaults.mk")
             endif()
         endif()
     endforeach()
@@ -137,7 +137,7 @@ macro(project name)
             endif()
             if(EXISTS ${component_dir}/config_defaults.mk)
                 message(STATUS "Find component defaults config of ${base_dir}")
-                list(APPEND kconfig_defaults_files ${component_dir}/config_defaults.mk)
+                list(APPEND kconfig_defaults_files_args --defaults "${component_dir}/config_defaults.mk")
             endif()
         endif()
     endforeach()
@@ -145,8 +145,12 @@ macro(project name)
         message(FATAL_ERROR "=================\nCan not find main component(folder) in project folder!!\n=================")
     endif()
     if(EXISTS ${PROJECT_SOURCE_DIR}/config_defaults.mk)
-        message(STATUS "Find project defaults config")
-        list(APPEND kconfig_defaults_files ${PROJECT_SOURCE_DIR}/config_defaults.mk)
+        message(STATUS "Find project defaults config(config_defaults.mk)")
+        list(APPEND kconfig_defaults_files_args --defaults "${PROJECT_SOURCE_DIR}/config_defaults.mk")
+    endif()
+    if(EXISTS ${PROJECT_SOURCE_DIR}/.config.mk)
+        message(STATUS "Find project defaults config(config.mk)")
+        list(APPEND kconfig_defaults_files_args --defaults "${PROJECT_SOURCE_DIR}/.config.mk")
     endif()
 
     # Generate config file from Kconfig
@@ -155,10 +159,11 @@ macro(project name)
         message(FATAL_ERROR "python not found, please install python firstly(python3 recommend)!")
     endif()
     message(STATUS "python command: ${python}, version: ${python_info_str}")
+    string(REPLACE ";" " " components_kconfig_files "${kconfig_defaults_files_args}")
     string(REPLACE ";" " " components_kconfig_files "${components_kconfig_files}")
     set(generate_config_cmd ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
-                            --kconfig ${SDK_PATH}/Kconfig
-                            --defaults ${kconfig_defaults_files}
+                            --kconfig "${SDK_PATH}/Kconfig"
+                            ${kconfig_defaults_files_args}
                             --menuconfig False
                             --env "SDK_PATH=${SDK_PATH}"
                             --env "PROJECT_PATH=${PROJECT_SOURCE_DIR}"
@@ -167,8 +172,8 @@ macro(project name)
                             --output header ${PROJECT_BINARY_DIR}/config/global_config.h
                             )
     set(generate_config_cmd2 ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
-                            --kconfig ${SDK_PATH}/Kconfig
-                            --defaults ${kconfig_defaults_files}
+                            --kconfig "${SDK_PATH}/Kconfig"
+                            ${kconfig_defaults_files_args}
                             --menuconfig True
                             --env "SDK_PATH=${SDK_PATH}"
                             --env "PROJECT_PATH=${PROJECT_SOURCE_DIR}"
