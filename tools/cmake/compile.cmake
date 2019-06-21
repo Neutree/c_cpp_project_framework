@@ -242,3 +242,6 @@ macro(project name)
     target_link_libraries(${name} main)
 endmacro()
 
+include(${SDK_PATH}/tools/cmake/compile_flags.cmake)
+
+

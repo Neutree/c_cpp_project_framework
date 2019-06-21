@@ -30,5 +30,8 @@ void lib2_test()
 #if BUILD_GIT_IS_DIRTY
     printf("WARNING: git repository have file not commit when build\r\n");
 #endif
+    #if AAAAA
+    printf("AAAAAA222222\n");
+    #endif
 }
 

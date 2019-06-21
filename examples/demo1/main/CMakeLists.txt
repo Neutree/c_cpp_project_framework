@@ -24,6 +24,14 @@ endif()
 # list(APPEND ADD_STATIC_LIB "lib/libtest.a")
 ###############################################
 
+#### Add compile option for this component ####
+#### Just for this component, won't affect other 
+#### modules, including component that depend 
+#### on this component
+# add_definitions(-DAAAAA=1)
+# add_compile_options(-DAAAAA=1)
+###############################################
+
 
 register_component()
 

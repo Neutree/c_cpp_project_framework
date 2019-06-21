@@ -21,6 +21,9 @@ if(NOT CONFIG_TOOLCHAIN_PATH)
     endif()
 endif()
 
+## Add preprocessor definitions for whole project
+# add_definitions(-DAAAAA=1)
+
 # Call compile
 include(${SDK_PATH}/tools/cmake/compile.cmake)
 
