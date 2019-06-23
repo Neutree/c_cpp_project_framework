@@ -69,11 +69,12 @@ elif args.cmd == "build":
     if not os.path.exists("build"):
         os.mkdir("build")
     os.chdir("build")
-    try:
-        subprocess.run(["cmake", "-G", gen_project_type, ".."])
-    except Exception as e:
-        print("cmake Error:{}".format(e))
-        exit(1)
+    if not os.path.exists("Makefile"):
+        try:
+            subprocess.run(["cmake", "-G", gen_project_type, ".."])
+        except Exception as e:
+            print("cmake Error:{}".format(e))
+            exit(1)
     try:
         subprocess.run(["make", "-j{}".format(cpu_count())])
     except Exception as e:
