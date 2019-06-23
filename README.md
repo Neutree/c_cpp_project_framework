@@ -11,6 +11,16 @@ Based on this project, you can quickly build your project construction system an
 If it helps you, please give a little star in the upper right corner~~ If needs improvement, just create an [issue](https://github.com/Neutree/c_cpp_project_framework/issues/new).  `(´ε｀ ʃƪ)♡`
 
 
+The target developer of this project:
+
+* Developers who are preparing to write `SDK` and need to write their own build system
+* Preparing to start writing a project who needs to write a build system
+* Who don't know much about `CMake`, but want to learn `CMake`
+* Who want to refactor the code engineering build system, maybe because of th bad old messy build system
+* Who want to add a very useful configuration system to the build system, you can quickly add and delete code modules as needed, and it is best to have an GUI configuration.
+* Who want the project to generate a variety of `IDE` supported projects.
+
+
 ## Get Started
 
 ```
@@ -74,8 +84,9 @@ Files under the project directory:
 
 Apache License 2.0， see [LICENSE](./LICENSE)
 
-## Thanks To
+## Other Reference
 
-* [ESP_IDF](https://github.com/espressif/esp-idf)
-* [Kconfiglib](https://github.com/ulfalizer/Kconfiglib)
+* [ESP_IDF](https://github.com/espressif/esp-idf)：  `SDK` of `ESP32`, Written very well
+* [Kconfiglib](https://github.com/ulfalizer/Kconfiglib)： `Kconfig`'s `Python` implementation
+* [RT-Thread](https://github.com/RT-Thread/rt-thread)：not `CMake`, but also use component
 

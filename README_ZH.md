@@ -10,6 +10,16 @@ C CPP Project Framework (Template)
 
 希望能帮到你，如果帮到了请右上角给颗小星星哦  ～～ 如果有啥不足欢迎提 [issue](https://github.com/Neutree/c_cpp_project_framework/issues/new)。  `(´ε｀ ʃƪ)♡`
 
+本项目的目标人群：
+
+* 正准备写 `SDK` 并且需要自己写构建系统的开发者
+* 正准备开始编写一个需要写构建系统的开发者
+* 对`CMake`不太了解，但想学习 `CMake` 的开发者
+* 想重构代码工程构建系统的，比如因为之前写的构建系统太杂乱
+* 想给构建系统中加一个十分好用的配置系统，可以按需求快速增删代码模块的，而且最好带界面配置的 开发者
+* 想让项目可以生成多种 `IDE` 支持的工程
+
+
 
 
 ## 快速上手
@@ -73,12 +83,12 @@ make -j10
 
 ## License
 
-Apache License 2.0， 更多查看 [LICENSE](./LICENSE)
+[Apache License 2.0](./LICENSE)
 
 
-## 致谢
+## 相关参考项目
 
-* [ESP_IDF](https://github.com/espressif/esp-idf)
-* [Kconfiglib](https://github.com/ulfalizer/Kconfiglib)
-
+* [ESP_IDF](https://github.com/espressif/esp-idf)： `ESP32` 的 `SDK`， 写得挺不错
+* [Kconfiglib](https://github.com/ulfalizer/Kconfiglib)： `Kconfig` `Python` 实现
+* [RT-Thread](https://github.com/RT-Thread/rt-thread)：不是用的 `CMake`, 但是也是使用了组件的概念
 
