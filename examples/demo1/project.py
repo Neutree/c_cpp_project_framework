@@ -21,7 +21,7 @@ parser.add_argument('--toolchain-prefix',
 cmd_help ='''project command'''
 parser.add_argument("cmd",
                     help=cmd_help,
-                    choices=["build", "clean", "distclean"]
+                    choices=["build", "clean", "distclean", "clean_conf"]
                     )
 
 args = parser.parse_args()
@@ -82,16 +82,25 @@ if args.cmd == "build":
 
 elif args.cmd == "clean":
     print("clean now")
-    os.chdir("build")
-    try:
-        subprocess.run(["make", "clean"])
-    except Exception as e:
-        print("make Error:{}".format(e))
-        exit(1)
+    if os.path.exists("build"):
+        os.chdir("build")
+        try:
+            subprocess.run(["make", "clean"])
+        except Exception as e:
+            print("make Error:{}".format(e))
+            exit(1)
     print("clean complete")
 elif args.cmd == "distclean":
     print("clean now")
-    shutil.rmtree("build")
+    if os.path.exists("build"):
+        shutil.rmtree("build")
+    print("clean complete")
+elif args.cmd == "clean_conf":
+    print("clean now")
+    if os.path.exists(config_filename):
+        os.remove(config_filename)
+    if os.path.exists("build/config/"):
+        shutil.rmtree("build/config")
     print("clean complete")
 elif args.cmd == "menuconfig":
     time_start = time.time()
