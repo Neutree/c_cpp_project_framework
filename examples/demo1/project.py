@@ -21,7 +21,7 @@ parser.add_argument('--toolchain-prefix',
 cmd_help ='''project command'''
 parser.add_argument("cmd",
                     help=cmd_help,
-                    choices=["build", "clean", "distclean", "clean_conf"]
+                    choices=["config", "build", "menuconfig", "clean", "distclean", "clean_conf"]
                     )
 
 args = parser.parse_args()
@@ -30,6 +30,9 @@ cwd = sys.path[0]
 os.chdir(cwd)
 
 config_filename = ".config.mk"
+gen_project_type = "Unix Makefiles"
+
+
 config_content_old = ""
 
 if not os.path.exists("CMakeLists.txt") or  not os.path.exists("main"):
@@ -58,14 +61,16 @@ if config_content != config_content_old:
     print("generate config file at: {}".format(config_filename))
 
 
-if args.cmd == "build":
+if args.cmd == "config":
+    print("config complete")
+elif args.cmd == "build":
     print("build now")
     time_start = time.time()
     if not os.path.exists("build"):
         os.mkdir("build")
     os.chdir("build")
     try:
-        subprocess.run(["cmake", "-G", "Unix Makefiles", ".."])
+        subprocess.run(["cmake", "-G", gen_project_type, ".."])
     except Exception as e:
         print("cmake Error:{}".format(e))
         exit(1)
@@ -109,7 +114,7 @@ elif args.cmd == "menuconfig":
     os.chdir("build")
     if not os.path.exists("build/Makefile"):
         try:
-            subprocess.run(["cmake", ".."])
+            subprocess.run(["cmake", "-G", gen_project_type, ".."])
         except Exception as e:
             print("cmake Error:{}".format(e))
             exit(1)

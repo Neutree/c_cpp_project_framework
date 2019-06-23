@@ -26,12 +26,27 @@ C CPP Project Framework (Template)
 
 ```
 cd examples/demo1
-# python config.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf-
+# python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
 mkdir build && cd build
 cmake ..
 make menuconfig
 make -j10
 ./demo1
+make clean
+rm -rf ./*
+```
+
+or
+
+```
+cd examples/demo1
+# python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
+python project.py menuconfig
+python project.py build
+./demo1
+python project.py clean
+python project.py distclean
+# python project.py clean_conf
 ```
 
 * 切换工程目录
