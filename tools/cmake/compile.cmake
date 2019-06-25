@@ -2,11 +2,16 @@
 # Convert to cmake path(for Windows)
 file(TO_CMAKE_PATH "${SDK_PATH}" SDK_PATH)
 
-message(STATUS "SDK_PATH:${SDK_PATH}")
-
 get_filename_component(parent_dir ${CMAKE_PARENT_LIST_FILE} DIRECTORY)
 get_filename_component(current_dir ${CMAKE_CURRENT_LIST_FILE} DIRECTORY)
 get_filename_component(parent_dir_name ${parent_dir} NAME)
+
+# Set project dir, so just projec can include this cmake file!!!
+set(PROJECT_SOURCE_DIR ${parent_dir})
+set(PROJECT_BINARY_DIR "${parent_dir}/build")
+message(STATUS "SDK_PATH:${SDK_PATH}")
+message(STATUS "PROJECT_PATH:${PROJECT_SOURCE_DIR}")
+
 
 function(register_component)
     get_filename_component(component_dir ${CMAKE_CURRENT_LIST_FILE} DIRECTORY)
@@ -208,19 +213,11 @@ macro(project name)
         set(CMAKE_CXX_COMPILER "${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}g++${EXT}")
         set(CMAKE_ASM_COMPILER "${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}gcc${EXT}")
         set(CMAKE_LINKER "${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}ld${EXT}")
-        set(CMAKE_AR "${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}ar${EXT}")
-        set(CMAKE_OBJCOPY "${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}objcopy${EXT}")
-        set(CMAKE_SIZE "${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}size${EXT}")
-        set(CMAKE_OBJDUMP "${CONFIG_TOOLCHAIN_PATH}/${CONFIG_TOOLCHAIN_PREFIX}objdump${EXT}")
     else()
         set(CMAKE_C_COMPILER "gcc${EXT}")
         set(CMAKE_CXX_COMPILER "g++${EXT}")
         set(CMAKE_ASM_COMPILER "gcc${EXT}")
         set(CMAKE_LINKER  "ld${EXT}")
-        set(CMAKE_AR  "ar${EXT}")
-        set(CMAKE_OBJCOPY  "objcopy${EXT}")
-        set(CMAKE_SIZE  "size${EXT}")
-        set(CMAKE_OBJDUMP  "objdump${EXT}")
     endif()
 
     set(CMAKE_C_COMPILER_WORKS 1)
