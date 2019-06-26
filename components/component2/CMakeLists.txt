@@ -12,7 +12,12 @@ if(CONFIG_COMPONENT2_ENABLED)
         )
     # aux_source_directory(src ADD_SRCS)
     # list(REMOVE_ITEM COMPONENT_SRCS "src/test.c")
+    # set(ADD_ASM_SRCS "src/asm.S")
+    # list(APPEND ADD_SRCS ${ADD_ASM_SRCS})
+    # SET_PROPERTY(SOURCE ${ADD_ASM_SRCS} PROPERTY LANGUAGE C) # set .S  ASM file as C language
+    # SET_SOURCE_FILES_PROPERTIES(${ADD_ASM_SRCS} PROPERTIES COMPILE_FLAGS "-x assembler-with-cpp -D BBBBB")
     ###############################################
+
 
     ###### Add required/dependent components ######
     list(APPEND ADD_REQUIREMENTS component1)

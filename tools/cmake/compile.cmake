@@ -223,13 +223,16 @@ macro(project name)
     set(CMAKE_C_COMPILER_WORKS 1)
     set(CMAKE_CXX_COMPILER_WORKS 1)
 
-    # set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_C_COMPILER> <CMAKE_C_LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
-    # set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CXX_COMPILER> <CMAKE_CXX_LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
+    
     set(CMAKE_SYSTEM_NAME Generic) 
 
-    # Declare project
+    # Declare project # This function will cler flags!
     _project(${name} ASM C CXX)
+    
+    include(${SDK_PATH}/tools/cmake/compile_flags.cmake)
 
+    # set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_C_COMPILER> <CMAKE_C_LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
+    # set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CXX_COMPILER> <CMAKE_CXX_LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
 
     # Add dependence: update configfile, append time and git info for global config header file
     # we didn't generate build info for cmake and makefile for if we do, it will always rebuild cmake
@@ -262,6 +265,5 @@ macro(project name)
     target_link_libraries(${name} main)
 endmacro()
 
-include(${SDK_PATH}/tools/cmake/compile_flags.cmake)
 
 
