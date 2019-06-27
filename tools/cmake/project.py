@@ -16,6 +16,7 @@ try:
     sdk_path = sdk_path
 except Exception:
     sdk_path = os.path.abspath("../../")
+project_path = sys.path[0]
 
 flash_dir = sdk_path+"/tools/flash"
 if os.path.exists(flash_dir):

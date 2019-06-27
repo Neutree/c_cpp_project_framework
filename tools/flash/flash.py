@@ -36,6 +36,8 @@ if __name__ == '__main__':
         print("-- call flash.py directly!")
         project_parser = parser
         project_args = project_parser.parse_args()
+        project_path = ""
+        sdk_path = ""
 
     config_old = {}
     # load flash config from file
@@ -66,6 +68,7 @@ if __name__ == '__main__':
     print("!!! please write flash ops here ...")
     print("-- flash port    :{}".format(config["port"]))
     print("-- flash baudrate:{}".format(config["baudrate"]))
+    print("project path:{}".format(project_path))
 
     ######################################################
     print("-- flash end")
