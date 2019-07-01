@@ -48,8 +48,8 @@ project_parser.add_argument('--toolchain-prefix',
                         default="")
 project_parser.add_argument('--verbose',
                         help='for build command, execute `make VERBOSE=1` to compile',
-                        metavar="BOOL",
-                        default="")
+                        action="store_true",
+                        default=False)
 cmd_help ='''project command'''
 project_parser.add_argument("cmd",
                     help=cmd_help,
@@ -107,7 +107,7 @@ elif project_args.cmd == "build" or project_args.cmd == "rebuild":
         res = subprocess.call(["cmake", "-G", gen_project_type, ".."])
         if res != 0:
             exit(1)
-    if project_args.verbose != "" and project_args.verbose != "0" and project_args.verbose.lower() != "false":
+    if project_args.verbose:
         res = subprocess.call(["make", "VERBOSE=1"])
     else:
         res = subprocess.call(["make", "-j{}".format(cpu_count())])
