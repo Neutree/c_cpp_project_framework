@@ -31,7 +31,7 @@ dict_arg_not_save = ["terminal"]
 if __name__ == '__main__':
     firmware = ""
     try:
-        flash_conf_path = sdk_path+"/tools/flash/.flash.conf.json"
+        flash_conf_path = project_path+"/.flash.conf.json"
         if project_args.cmd == "clean_conf":
             if os.path.exists(flash_conf_path):
                 os.remove(flash_conf_path)
