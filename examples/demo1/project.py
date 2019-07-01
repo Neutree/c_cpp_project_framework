@@ -1,3 +1,9 @@
+#
+# @file from https://github.com/Neutree/c_cpp_project_framework
+# @author neucrack
+# @license Apache 2.0
+#
+
 import sys, os
 
 sdk_env_name = "MY_SDK_PATH"

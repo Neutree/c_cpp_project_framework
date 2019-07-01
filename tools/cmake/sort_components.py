@@ -1,7 +1,9 @@
 #
 # sort components according to priority.conf file
+#
 # @file from https://github.com/Neutree/c_cpp_project_framework
 # @author neucrack
+# @license Apache 2.0
 #
 # @usage: python sort_components.py priority.conf component_dir1 component_dir2 ... component_dir4
 #

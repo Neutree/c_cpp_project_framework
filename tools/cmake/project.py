@@ -1,7 +1,9 @@
 #
 # @file from https://github.com/Neutree/c_cpp_project_framework
 # @author neucrack
+# @license Apache 2.0
 #
+
 
 import argparse
 import os, sys, time, re, shutil

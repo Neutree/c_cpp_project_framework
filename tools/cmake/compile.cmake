@@ -1,3 +1,9 @@
+#
+# @file from https://github.com/Neutree/c_cpp_project_framework
+# @author neucrack
+# @license Apache 2.0
+#
+
 
 # Convert to cmake path(for Windows)
 file(TO_CMAKE_PATH "${SDK_PATH}" SDK_PATH)
