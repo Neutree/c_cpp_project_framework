@@ -1,6 +1,7 @@
 
 #include "lib1.h"
 #include "stdio.h"
+#include "global_config.h"
 
 void test1()
 {
