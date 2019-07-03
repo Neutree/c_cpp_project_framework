@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#-*- coding = utf-8 -*-
+
 #
 # @file from https://github.com/Neutree/c_cpp_project_framework
 # @author neucrack
