@@ -21,6 +21,9 @@ The target developer of this project:
 * Who want the project to generate a variety of `IDE` supported projects.
 
 
+![](assets/image/build.gif)
+
+
 ## Get Started
 
 ```

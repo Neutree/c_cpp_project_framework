@@ -20,6 +20,7 @@ C CPP Project Framework (Template)
 * 想让项目可以生成多种 `IDE` 支持的工程
 
 
+![](assets/image/build.gif)
 
 
 ## 快速上手
