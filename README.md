@@ -99,6 +99,12 @@ Files under the project directory:
 
 Apache License 2.0， see [LICENSE](./LICENSE)
 
+
+## Repos used this framwork
+
+* [MaixPy](https://github.com/sipeed/MaixPy/): `Micropython` port for `AIOT` chip `K210`
+
+
 ## Other Reference
 
 * [ESP_IDF](https://github.com/espressif/esp-idf)：  `SDK` of `ESP32`, Written very well

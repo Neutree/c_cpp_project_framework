@@ -101,6 +101,11 @@ python project.py distclean
 [Apache License 2.0](./LICENSE)
 
 
+## 使用了此框架的仓库
+
+* [MaixPy](https://github.com/sipeed/MaixPy/): 让针对`AIOT`应用的芯片`K210`用上`Micropython`
+
+
 ## 相关参考项目
 
 * [ESP_IDF](https://github.com/espressif/esp-idf)： `ESP32` 的 `SDK`， 写得挺不错
