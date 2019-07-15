@@ -2,7 +2,8 @@
 #include "stdio.h"
 #include "test.h"
 #include "global_config.h"
-#include "global_build_info.h"
+#include "global_build_info_time.h"
+#include "global_build_info_version.h"
 
 #include "lib1.h"
 

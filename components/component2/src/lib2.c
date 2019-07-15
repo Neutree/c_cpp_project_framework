@@ -4,7 +4,8 @@
 #include "lib2_private.h"
 #include "stdio.h"
 #include "global_config.h"
-#include "global_build_info.h"
+#include "global_build_info_time.h"
+#include "global_build_info_version.h"
 
 
 void lib2_test()
