@@ -28,9 +28,14 @@ endif()
 #### Just for this component, won't affect other 
 #### modules, including component that depend 
 #### on this component
-# add_definitions(-DAAAAA=1)
-# add_compile_options(-DAAAAA=1)
+# list(APPEND ADD_DEFINITIONS_PRIVATE -DAAAAA=1)
+
+#### Add compile option for this component
+#### and components denpend on this component
+# list(APPEND ADD_DEFINITIONS -DAAAAA222=1
+#                             -DAAAAA333=1)
 ###############################################
+
 
 
 register_component()

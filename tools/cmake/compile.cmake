@@ -61,6 +61,16 @@ function(register_component)
     # Add requirements
     target_link_libraries(${component_name} ${ADD_REQUIREMENTS})
 
+    # Add definitions public
+    foreach(difinition ${ADD_DEFINITIONS})
+        target_compile_options(${component_name} PUBLIC ${difinition})
+    endforeach()
+
+    # Add definitions private
+    foreach(difinition ${ADD_DEFINITIONS_PRIVATE})
+        target_compile_options(${component_name} PRIVATE ${difinition})
+    endforeach()
+
     # Add static lib
     if(ADD_STATIC_LIB)
         foreach(lib ${ADD_STATIC_LIB})

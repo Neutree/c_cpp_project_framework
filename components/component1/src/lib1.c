@@ -9,6 +9,9 @@ void test1()
     #if AAAAA
     printf("AAAAAA\n");
     #endif
+    #if AAAAA222
+    printf("AAAAAA222\n");
+    #endif
 
 }
 

@@ -26,7 +26,11 @@ int main()
 #endif
 
     #if AAAAA
-    printf("AAAAAA333333\n");
+    printf("AAAAAA from main\n");
+    #endif
+
+    #if AAAAA222
+    printf("AAAAAA222 from main\n");
     #endif
 
     return 0;
