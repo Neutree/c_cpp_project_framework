@@ -44,8 +44,8 @@ BUILD_TIME_YEAR_OF_DAY ={}
 git_str_header = '''
 #define BUILD_VERSION_MAJOR   {}
 #define BUILD_VERSION_MINOR   {}
+#define BUILD_VERSION_MICRO   {}
 #define BUILD_VERSION_DEV     {}
-#define BUILD_VERSION_DEV2    {}
 #define BUILD_GIT_COMMIT_ID   "{}"
 #define BUILD_GIT_IS_DIRTY    {}
 '''
@@ -53,8 +53,8 @@ git_str_header = '''
 git_str_cmake = '''
 set(BUILD_VERSION_MAJOR   "{}")
 set(BUILD_VERSION_MINOR   "{}")
+set(BUILD_VERSION_MICRO   "{}")
 set(BUILD_VERSION_DEV     "{}")
-set(BUILD_VERSION_DEV2    "{}")
 set(BUILD_GIT_COMMIT_ID   "{}")
 set(BUILD_GIT_IS_DIRTY    "{}")
 '''
@@ -62,8 +62,8 @@ set(BUILD_GIT_IS_DIRTY    "{}")
 git_str_makefile = '''
 BUILD_VERSION_MAJOR  ={}
 BUILD_VERSION_MINOR  ={}
+BUILD_VERSION_MICRO  ={}
 BUILD_VERSION_DEV    ={}
-BUILD_VERSION_DEV2   ={}
 BUILD_GIT_COMMIT_ID  ={}
 BUILD_GIT_IS_DIRTY   ={}
 '''
@@ -131,8 +131,8 @@ def append_time_info(time_info_filename, version_info_filename, file_type):
     git_tag_name = ""
     version_major = 0
     version_minor = 0
-    version_dev   = 0
-    version_dev2  = 0
+    version_micro   = 0
+    version_dev  = 0
     git_hash      = ""
     git_dirty     = ""
     try:
@@ -183,9 +183,9 @@ def append_time_info(time_info_filename, version_info_filename, file_type):
         if len(version) >= 2:
             version_minor = version[1]
         if  len(version) >= 3:
-            version_dev = version[2]
+            version_micro = version[2]
         if  len(version) >= 4:
-            version_dev2 = version[3]
+            version_dev = version[3]
     if file_type == "header":
         dirty_value = 1 if git_dirty=="dirty" else 0
     elif file_type == "cmake":
@@ -198,8 +198,8 @@ def append_time_info(time_info_filename, version_info_filename, file_type):
             dirty_value = " is not set"
     git_define = append_format_git_str.format(version_major,
                                               version_minor,
+                                              version_micro,
                                               version_dev,
-                                              version_dev2,
                                               git_hash,
                                               dirty_value)
     # append time and git info to content
