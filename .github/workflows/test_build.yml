@@ -14,6 +14,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
+    - name: Get submodules
+      run: |
+        git submodule update --init --recursive
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
