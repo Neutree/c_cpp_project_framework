@@ -32,7 +32,7 @@ mkdir build && cd build
 cmake ..
 make menuconfig
 make -j10
-./demo1
+./build/demo1
 make clean
 rm -rf ./*
 ```
@@ -44,7 +44,7 @@ cd examples/demo1
 # python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
 python project.py menuconfig
 python project.py build
-./demo1
+./build/demo1
 python project.py clean
 python project.py distclean
 # python project.py clean_conf
