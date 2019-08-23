@@ -105,6 +105,7 @@ python project.py distclean
 ## 使用了此框架的仓库
 
 * [MaixPy](https://github.com/sipeed/MaixPy/): 让针对`AIOT`应用的芯片`K210`用上`Micropython`
+* [MF1_SDK](https://github.com/sipeed/MF1_SDK): `MF1` AI 模组（开发板）的 SDK
 
 
 ## 相关参考项目

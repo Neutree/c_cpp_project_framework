@@ -106,7 +106,7 @@ Apache License 2.0， see [LICENSE](./LICENSE)
 ## Repos used this framwork
 
 * [MaixPy](https://github.com/sipeed/MaixPy/): `Micropython` port for `AIOT` chip `K210`
-
+* [MF1_SDK](https://github.com/sipeed/MF1_SDK): SDK for `MF1` AI module(board)
 
 ## Other Reference
 
