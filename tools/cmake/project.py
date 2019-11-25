@@ -110,6 +110,8 @@ elif project_args.cmd == "build" or project_args.cmd == "rebuild":
         os.mkdir("build")
     os.chdir("build")
     if not os.path.exists("Makefile") or project_args.cmd == "rebuild":
+        if not os.path.isabs(project_args.config_file):
+            project_args.config_file = os.path.join(project_path, project_args.config_file)
         config_path = os.path.abspath(project_args.config_file)
         if not os.path.exists(config_path):
             print("config file path error:{}".format(config_path))
@@ -159,6 +161,8 @@ elif project_args.cmd == "menuconfig":
         os.mkdir("build")
     os.chdir("build")
     if not os.path.exists("build/Makefile"):
+        if not os.path.isabs(project_args.config_file):
+            project_args.config_file = os.path.join(project_path, project_args.config_file)
         config_path = os.path.abspath(project_args.config_file)
         if not os.path.exists(config_path):
             print("config file path error:{}".format(config_path))
