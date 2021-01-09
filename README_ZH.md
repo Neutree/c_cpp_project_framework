@@ -97,9 +97,9 @@ python project.py distclean
 
 
 
-## License
+## 开源许可
 
-[Apache License 2.0](./LICENSE)
+**MIT**: 详情看 [LICENSE](./LICENSE) 文件
 
 
 ## 使用了此框架的仓库

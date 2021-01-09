@@ -100,7 +100,7 @@ Files under the project directory:
 
 ## License
 
-Apache License 2.0， see [LICENSE](./LICENSE)
+**MIT**， see [LICENSE](./LICENSE)
 
 
 ## Repos used this framwork
