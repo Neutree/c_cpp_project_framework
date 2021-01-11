@@ -165,6 +165,8 @@ elif project_args.cmd == "distclean":
             print(output.decode())
         os.chdir("..")
         shutil.rmtree("build")
+    if os.path.exists("dist"):
+        shutil.rmtree("dist")
     print("clean complete")
 # menuconfig
 elif project_args.cmd == "menuconfig":
