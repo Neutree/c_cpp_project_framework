@@ -27,6 +27,12 @@ if(CONFIG_COMPONENT2_ENABLED)
     # list(APPEND ADD_STATIC_LIB "lib/libtest.a")
     ###############################################
 
+    ############ Add dynamic libs ##################
+    # list(APPEND ADD_DYNAMIC_LIB "lib/arch/v831/libmaix_nn.so"
+    #                             "lib/arch/v831/libmaix_cam.so"
+    # )
+    ###############################################
+
     #### Add compile option for this component ####
     #### Just for this component, won't affect other 
     #### modules, including component that depend 

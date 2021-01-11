@@ -7,4 +7,10 @@
 #     DEPENDS ${PROJECT_NAME}
 #     COMMENT "-- Generating binary file ...")
 
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#     COMMAND mkdir -p ${PROJECT_DIST_DIR}
+#     COMMAND cp ${g_dynamic_libs} ${PROJECT_DIST_DIR}
+#     COMMAND cp ${PROJECT_BINARY_DIR}/${PROJECT_NAME} ${PROJECT_DIST_DIR}
+#     DEPENDS ${PROJECT_NAME}
+#     COMMENT "-- copy binary files to dist dir ...")
 
