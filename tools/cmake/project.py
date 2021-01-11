@@ -56,7 +56,19 @@ project_parser.add_argument('--verbose',
                         help='for build command, execute `make VERBOSE=1` to compile',
                         action="store_true",
                         default=False)
-cmd_help ='''project command'''
+cmd_help ='''
+project command:
+
+config:     config toolchain path
+clean_conf: clean toolchain path config
+menuconfig: open menuconfig pannel, a visual config pannel
+build:      start compile project, temp files in `build` dir, dist files in `dist` dir
+rebuild:    update cmakefiles and build, if new file added, shoud use this command
+clean:      clean build files, won't clean configuration
+distclean:  clean all build files and configuration except configuration configed by config conmand
+flash:      burn firmware to board's flash
+'''
+
 project_parser.add_argument("cmd",
                     help=cmd_help,
                     choices=["config", "build", "rebuild", "menuconfig", "clean", "distclean", "clean_conf", "flash"]
