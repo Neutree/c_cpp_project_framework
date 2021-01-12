@@ -10,7 +10,8 @@ if(CONFIG_COMPONENT2_ENABLED)
     ############## Add source files ###############
     list(APPEND ADD_SRCS  "src/lib2.c"
         )
-    # aux_source_directory(src ADD_SRCS)
+    # aux_source_directory(src ADD_SRCS)  # collect all source file in src dir, will set var ADD_SRCS
+    # append_srcs_dir(ADD_SRCS "src")     # append source file in src dir to var ADD_SRCS
     # list(REMOVE_ITEM COMPONENT_SRCS "src/test.c")
     # set(ADD_ASM_SRCS "src/asm.S")
     # list(APPEND ADD_SRCS ${ADD_ASM_SRCS})

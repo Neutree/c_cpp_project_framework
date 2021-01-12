@@ -109,6 +109,9 @@ To do this, only need:
 git clone https://github.com/Neutree/c_cpp_project_framework --recursive
 ```
 Note that the `--recursive` parameter is used here, because sub-modules are used in the project. The advantage of sub-modules is that each project is managed separately. For example, `Kconfiglib` is used as a sub-module to provide `menuconfig` with interface function configuration
+
+**If you did't update submodule, the compile will error!!!!**
+
 If you forget to add this parameter when cloning, you can also use the following command to update the submodule:
 ```
 git submodule update --init --recursive
@@ -127,7 +130,7 @@ Of course, you can also just delete the `.git` directory, and start a git reposi
 
 
 * Then export the variable `export MY_SDK_PATH=/home/neucrack/my_SDK` in the terminal, which can be placed in the `~/.bashrc` or `~/.zshrc` file, so that this variable will be automatically added every time the terminal is started
-* Then create a project anywhere, such as copy the entire folder of `example/demo1` to `/home/neucrack/temp/my_projects/demo1`
+* Then create a project anywhere, such as copy the entire content of the folder of `example/demo1` to `/home/neucrack/temp/my_projects/demo1`
 * Then clear the previous build cache (if there is one, ignore it if there is none)
 ```
 python3 project.py distclean

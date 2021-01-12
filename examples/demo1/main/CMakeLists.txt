@@ -5,10 +5,11 @@ list(APPEND ADD_PRIVATE_INCLUDE "")
 ###############################################
 
 ############ Add source files #################
-list(APPEND ADD_SRCS  "src/main.c"
-                      "src/test.c"
-    )
-# aux_source_directory(src ADD_SRCS)
+# list(APPEND ADD_SRCS  "src/main.c"
+#                       "src/test.c"
+#     )
+# aux_source_directory(src ADD_SRCS)  # collect all source file in src dir, will set var ADD_SRCS
+append_srcs_dir(ADD_SRCS "src")       # append source file in src dir to var ADD_SRCS
 # list(REMOVE_ITEM COMPONENT_SRCS "src/test2.c")
 ###############################################
 

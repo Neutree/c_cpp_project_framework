@@ -107,6 +107,9 @@ python project.py distclean
 git clone https://github.com/Neutree/c_cpp_project_framework --recursive
 ```
 注意这里用了`--recursive`参数， 因为工程中使用了子模块，子模块的好处是各个工程分开管理，比如这里用了`Kconfiglib`作为子模块，提供`menuconfig`带界面的功能配置功能
+
+**注意如果不更新子模块，将无法通过编译！！！**
+
 如果克隆的时候忘记加这个参数了，也可以再使用下面这个命令来更新子模块：
 ```
 git submodule update --init --recursive
@@ -124,7 +127,7 @@ git submodule update --init --recursive
 当然，你也可以选择删除 `.git` 目录，然后重新创建一个没有子模块的 git 仓库～
 
 * 然后在终端导出变量 `export MY_SDK_PATH=/home/neucrack/my_SDK`， 可以放到 `~/.bashrc`或者`~/.zshrc`文件中，这样每次终端启动都会自动添加这个变量了
-* 然后在任意地方建立工程， 比如拷贝`example/demo1`整个文件夹到`/home/neucrack/temp/my_projects/demo1`
+* 然后在任意地方建立工程， 比如拷贝`example/demo1`整个文件夹中的所有文件到`/home/neucrack/temp/my_projects/demo1`
 * 然后清除之前的构建缓存（如果有的话，没有就忽略）
 ```
 python3 project.py distclean
