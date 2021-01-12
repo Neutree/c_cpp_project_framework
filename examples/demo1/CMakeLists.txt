@@ -28,8 +28,11 @@ endif()
 include(${SDK_PATH}/tools/cmake/compile.cmake)
 
 
-# Project Name
-project(demo1)
+# Project Name, default the same as project directory name
+get_filename_component(parent_dir ${CMAKE_PARENT_LIST_FILE} DIRECTORY)
+get_filename_component(PROJECT_NAME ${parent_dir} NAME)
+message("-- PROJECT_NAME:${PROJECT_NAME}")
+project(${PROJECT_NAME})
 
 
 
