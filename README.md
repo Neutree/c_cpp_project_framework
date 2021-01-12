@@ -149,7 +149,7 @@ python3 project.py build
 ## Repos used this framwork
 
 * [MaixPy](https://github.com/sipeed/MaixPy/): `Micropython` port for `AIOT` chip `K210`
-* [libmaix](https://github.com/sipeed/libmaix): A lib for embeded AI module running with hardware accelaration
+* [libmaix](https://github.com/sipeed/libmaix): A lib for embeded AI model running with hardware accelaration
 * [MF1_SDK](https://github.com/sipeed/MF1_SDK): SDK for `MF1` AI module(board)
 
 ## Other Reference
