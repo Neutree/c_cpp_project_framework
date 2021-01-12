@@ -30,7 +30,10 @@ include(${SDK_PATH}/tools/cmake/compile.cmake)
 
 # Project Name, default the same as project directory name
 get_filename_component(parent_dir ${CMAKE_PARENT_LIST_FILE} DIRECTORY)
-get_filename_component(PROJECT_NAME ${parent_dir} NAME)
+get_filename_component(project_dir_name ${parent_dir} NAME)
+
+set(PROJECT_NAME ${project_dir_name}) # change this var if don't want the same as directory's
+
 message("-- PROJECT_NAME:${PROJECT_NAME}")
 project(${PROJECT_NAME})
 

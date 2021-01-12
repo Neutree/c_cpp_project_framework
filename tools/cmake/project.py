@@ -24,12 +24,14 @@ project_cmake_path = project_path+"/CMakeLists.txt"
 project_cmake_content = ""
 with open(project_cmake_path) as f:
     project_cmake_content = f.read()
-match = re.findall(r"{}(.*){}".format(r"project\(", r"\)"), project_cmake_content, re.MULTILINE|re.DOTALL)
+match = re.findall(r"set\(PROJECT_NAME (.*)\)", project_cmake_content)
 if len(match) != 0:
     project_name = match[0]
-    print(project_name)
+    if("project_dir_name" in project_name):
+        project_name = os.path.basename(project_path)
+    print("-- project name: {}".format(project_name))
 if project_name == "":
-    print("[ERROR] Can not find project name in {}".format(project_cmake_path))
+    print("[ERROR] Can not find project name in {}, not set(PROJECT_NAME {})".format(project_cmake_path, "${project_name}"))
     exit(1)
 
 
