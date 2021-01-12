@@ -96,7 +96,47 @@ Files under the project directory:
 * `config_defaults.mk`: Optional, project default configuration file, the default configuration will be loaded when `cmake` execute. The format of the configuration is `Makefile`. You can use the terminal GUI configuration (`make menuconfig`) to generate the configuration file, the generated configuration file is in `build/config/global_config.mk`, then copy to `config_defaults.mk`.
 > Note: After modifying `config_defaults.mk`, you need to delete the files in the `build` directory (or just delete the `mk` file in the `build/config` directory) to regenerate, because the current build system will use the existing configuration file (`build/config/global_config.mk`)
 
+## Store SDK and project directory separately
 
+Normally, you only need to modify the name of the `example` directory according to your needs, such as changing it to `projects`, or creating a new directory in the project root directory, such as `projects/hello_world`, and copy files in the `examples/demo1`'s content to start a project
+
+In addition, the project directory and the SDK directory can also be stored separately. This is especially used for open source projects, a copy of SDK, users develop based on this SDK, which is more conducive to the spread of routines, users do not need to copy a copy of the SDK, just specify the use SDK version (git commit number)
+To do this, only need:
+
+* Download `SDK` and put it in a directory, such as `/home/neucrack/my_SDK`
+
+```
+git clone https://github.com/Neutree/c_cpp_project_framework --recursive
+```
+Note that the `--recursive` parameter is used here, because sub-modules are used in the project. The advantage of sub-modules is that each project is managed separately. For example, `Kconfiglib` is used as a sub-module to provide `menuconfig` with interface function configuration
+If you forget to add this parameter when cloning, you can also use the following command to update the submodule:
+```
+git submodule update --init --recursive
+```
+In addition, when the remote repository is updated, the user also needs to use the following command to update the code (ie update the submodule code at the same time):
+```shell
+git pull --recursive
+```
+or:
+```
+git pull
+git submodule update --init --recursive
+```
+
+Of course, you can also just delete the `.git` directory, and start a git repository with no submodule~~~
+
+
+* Then export the variable `export MY_SDK_PATH=/home/neucrack/my_SDK` in the terminal, which can be placed in the `~/.bashrc` or `~/.zshrc` file, so that this variable will be automatically added every time the terminal is started
+* Then create a project anywhere, such as copy the entire folder of `example/demo1` to `/home/neucrack/temp/my_projects/demo1`
+* Then clear the previous build cache (if there is one, ignore it if there is none)
+```
+python3 project.py distclean
+```
+* Then configure and build
+```
+python3 project.py menuconfig
+python3 project.py build
+```
 
 ## License
 
@@ -106,6 +146,7 @@ Files under the project directory:
 ## Repos used this framwork
 
 * [MaixPy](https://github.com/sipeed/MaixPy/): `Micropython` port for `AIOT` chip `K210`
+* [libmaix](https://github.com/sipeed/libmaix): A lib for embeded AI module running with hardware accelaration
 * [MF1_SDK](https://github.com/sipeed/MF1_SDK): SDK for `MF1` AI module(board)
 
 ## Other Reference

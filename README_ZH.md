@@ -94,8 +94,46 @@ python project.py distclean
 * `config_defaults.mk`： 工程默认配置文件，执行`cmake`构建时会从这里加载默认配置，配置的格式是`Makefile`的格式，可以先使用终端界面配置(`make menuconfig`)生成配置文件复制过来，生成的配置文件在`build/config/global_config.mk`。
 > 注意：每次修改`config_defaults.mk` 后需要删除`build`目录下的文件(或者只删除`build/config/global_config.mk`文件)重新生成，因为当前构建系统会优先使用`build`目录下已经存在的配置文件
 
+## SDK 和 工程目录分开存放
 
+通常情况下，只需要按照自己的需求，修改`example`目录的名字，比如改成`projects`，或者在工程根目录重新创建一个目录也是可以的，比如`projects/hello_world`，然后拷贝`examples/demo1`中的内容来新建一个新的工程
 
+另外，工程目录和 SDK 目录也可以分开存放，这通常适用于开源项目，一份SDK，用户基于这份 SDK 开发，这样更利于源码传播，用户不需要拷贝一份 SDK， 只需要指定使用的 SDK 版本（git 提交号）。
+要做到，只需要：
+
+* 下载 `SDK` 放到某个目录，比如 `/home/neucrack/my_SDK`
+
+```
+git clone https://github.com/Neutree/c_cpp_project_framework --recursive
+```
+注意这里用了`--recursive`参数， 因为工程中使用了子模块，子模块的好处是各个工程分开管理，比如这里用了`Kconfiglib`作为子模块，提供`menuconfig`带界面的功能配置功能
+如果克隆的时候忘记加这个参数了，也可以再使用下面这个命令来更新子模块：
+```
+git submodule update --init --recursive
+```
+另外，当远程仓库更新了，用户也需要使用以下命令来更新代码（即同时更新子模块代码）：
+```shell
+git pull --recursive
+```
+或者：
+```
+git pull
+git submodule update --init --recursive
+```
+
+当然，你也可以选择删除 `.git` 目录，然后重新创建一个没有子模块的 git 仓库～
+
+* 然后在终端导出变量 `export MY_SDK_PATH=/home/neucrack/my_SDK`， 可以放到 `~/.bashrc`或者`~/.zshrc`文件中，这样每次终端启动都会自动添加这个变量了
+* 然后在任意地方建立工程， 比如拷贝`example/demo1`整个文件夹到`/home/neucrack/temp/my_projects/demo1`
+* 然后清除之前的构建缓存（如果有的话，没有就忽略）
+```
+python3 project.py distclean
+```
+* 然后配置和构建即可
+```
+python3 project.py menuconfig
+python3 project.py build
+```
 
 ## 开源许可
 
@@ -105,6 +143,7 @@ python project.py distclean
 ## 使用了此框架的仓库
 
 * [MaixPy](https://github.com/sipeed/MaixPy/): 让针对`AIOT`应用的芯片`K210`用上`Micropython`
+* [libmaix](https://github.com/sipeed/libmaix): 支持多嵌入式平台的带硬件加速的 AI 模型运行库
 * [MF1_SDK](https://github.com/sipeed/MF1_SDK): `MF1` AI 模组（开发板）的 SDK
 
 
