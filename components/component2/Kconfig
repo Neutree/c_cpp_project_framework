@@ -23,3 +23,18 @@ menu "Component2 configuration"
     endmenu
 endmenu
 
+
+menuconfig MENUCONFIG_EXAMPLE
+    bool "selectable menuconfig item example"
+    default n
+
+    config MENUCONFIG_SUB_EXAMPLE_1
+        bool "menuconfig item's sub item1"
+        default y
+        depends on MENUCONFIG_EXAMPLE
+    config MENUCONFIG_SUB_EXAMPLE_2
+        bool "menuconfig item's sub item2"
+        default n
+        depends on MENUCONFIG_EXAMPLE
+    
+
