@@ -30,13 +30,39 @@ function(register_component)
     get_filename_component(component_name ${component_dir} NAME)
     message(STATUS "[register component: ${component_name} ], path:${component_dir}")
 
+    # Get params: DYNAMIC/SHARED
+    foreach(name ${ARGN})
+        string(TOUPPER ${name} name)
+        if(${name} STREQUAL "DYNAMIC" OR ${name} STREQUAL "SHARED")
+            set(to_dynamic_lib true)
+        endif()
+    endforeach()
+    if(to_dynamic_lib)
+        message("-- component ${component_name} will compiled to dynamic lib")
+        # Add dynamic file path to g_dynamic_libs variable
+        set(dynamic_libs ${g_dynamic_libs})
+        list(APPEND dynamic_libs "${PROJECT_BINARY_DIR}/${component_name}/lib${component_name}${DL_EXT}")
+        set(g_dynamic_libs ${dynamic_libs}  CACHE INTERNAL "g_dynamic_libs")
+    else()
+        message("-- component ${component_name} will compiled to static lib")
+    endif()
+
     # Add src to lib
     if(ADD_SRCS)
-        add_library(${component_name} STATIC ${ADD_SRCS})
+        if(to_dynamic_lib)
+            add_library(${component_name} SHARED ${ADD_SRCS})
+        else()
+            add_library(${component_name} STATIC ${ADD_SRCS})
+        endif()
         set(include_type PUBLIC)
     else()
-        add_library(${component_name} INTERFACE)
-        set(include_type INTERFACE)
+        if(to_dynamic_lib)
+            add_library(${component_name} SHARED)
+            set(include_type PUBLIC)
+        else()
+            add_library(${component_name} INTERFACE)
+            set(include_type INTERFACE)
+        endif()
     endif()
 
     # Add include
@@ -256,8 +282,10 @@ macro(project name)
     include(${global_config_dir}/global_config.cmake)
     if(WIN32)
         set(EXT ".exe")
+        set(DL_EXT ".dll")
     else()
         set(EXT "")
+        set(DL_EXT ".so")
     endif()
 
     # Config toolchain
@@ -285,7 +313,7 @@ macro(project name)
     set(CMAKE_CXX_COMPILER_WORKS 1)
 
     
-    set(CMAKE_SYSTEM_NAME Generic) 
+    # set(CMAKE_SYSTEM_NAME Generic) # set this flag may leads to dymamic(/shared) lib compile fail
 
     # Declare project # This function will cler flags!
     _project(${name} ASM C CXX)

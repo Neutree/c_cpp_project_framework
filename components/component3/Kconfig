@@ -1,0 +1,11 @@
+
+menuconfig COMPONENT3_ENABLED
+    bool "Enable component3"
+    default y
+
+    config COMPONENT3_DYNAMIC
+        bool "compile component as dynamic(shared) lib"
+        default y
+        depends on COMPONENT3_ENABLED
+    
+

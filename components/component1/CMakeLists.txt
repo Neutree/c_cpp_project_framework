@@ -40,6 +40,6 @@ list(APPEND ADD_DEFINITIONS -DAAAAA222=1
                             -DAAAAA333=1)
 ###############################################
 
-
+# register component, DYNAMIC or SHARED flags will make component compiled to dynamic(shared) lib
 register_component()
 

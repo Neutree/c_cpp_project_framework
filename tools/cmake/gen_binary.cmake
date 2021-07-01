@@ -7,6 +7,8 @@
 #     DEPENDS ${PROJECT_NAME}
 #     COMMENT "-- Generating binary file ...")
 
+# variable #{g_dynamic_libs} have dependency dynamic libs and compiled dynamic libs(register component and assigned DYNAMIC or SHARED flag)
+
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 #     COMMAND mkdir -p ${PROJECT_DIST_DIR}
 #     COMMAND cp ${g_dynamic_libs} ${PROJECT_DIST_DIR}

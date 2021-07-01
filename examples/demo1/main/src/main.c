@@ -11,6 +11,11 @@
 #include "lib2.h"
 #endif
 
+#if CONFIG_COMPONENT3_ENABLED
+#include "lib3.h"
+#endif
+
+
 // #include "lib2_private.h"  // We can't include lib2_private.h for it's compoent2's private include dir
 
 
@@ -32,6 +37,10 @@ int main()
     #if AAAAA222
     printf("AAAAAA222 from main\n");
     #endif
+
+#if CONFIG_COMPONENT3_ENABLED
+    lib3_test();
+#endif
 
     return 0;
 }

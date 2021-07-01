@@ -23,6 +23,18 @@ C CPP Project Framework (Template)
 ![](assets/image/build.gif)
 
 
+## 特性
+
+* 语法简单, 无需`Makefile`或者`CMake`知识, 只需基于模板修改变量的值即可非常简单地用起来了
+* 基于组件(component)概念的项目结构, 方便搭建层次结构清晰的项目架构
+* 组件之间调用只需要一个语句指定依赖即可(比如`list(APPEND ADD_REQUIREMENTS component1)`), 无需设置多余变量比如`INCLUDE 路径`即可在源码中调用依赖的组件的内容
+* 使用 `Kconfig` 使项目组件和代码可裁剪配置, 方便项目满足不同的需求
+* 方便地引入静态库(`.a`) 和 动态库(`.so`) ( 比如`list(APPEND ADD_STATIC_LIB "lib/libtest.a")`)
+* 方便地生成静态库(`.a`) 和 动态库(`.so`) (默认生成静态库, 需要组件生成动态库,则使用`register_component(DYNAMIC)`注册模块即可)
+* 使用 `Python` 脚本作为辅助, 可方便地添加命令和工具, 编译只需要执行简单的命令即可(如`python project.py build` `python project.py menuconfig`)
+* 方便地作为 `SDK`, 工程实例可以直接放在`SDK`目录下, 也可以单独放在磁盘任何地方, 只需要设置环境变量`MY_SDK_PATH`即可
+
+
 ## 快速上手
 
 ```
@@ -93,6 +105,12 @@ python project.py distclean
 
 * `config_defaults.mk`： 工程默认配置文件，执行`cmake`构建时会从这里加载默认配置，配置的格式是`Makefile`的格式，可以先使用终端界面配置(`make menuconfig`)生成配置文件复制过来，生成的配置文件在`build/config/global_config.mk`。
 > 注意：每次修改`config_defaults.mk` 后需要删除`build`目录下的文件(或者只删除`build/config/global_config.mk`文件)重新生成，因为当前构建系统会优先使用`build`目录下已经存在的配置文件
+
+* `project.py`: 工具脚本调用入口, 使用`python project.py menuconfig` `python project.py build` 等命令来开始构建
+
+如何将工程目录放在磁盘的任何地方: 
+
+* 将`CMakeLists.txt`和 `project.py` 中的 `MY_SDK_PATH` 改成你喜欢的环境变量名称, 然后在终端中设置这个环境变量的值为`SDK`的路径, 即可将这个工程目录放到任何地方也可以编译了
 
 ## SDK 和 工程目录分开存放
 

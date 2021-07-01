@@ -24,6 +24,18 @@ The target developer of this project:
 ![](assets/image/build.gif)
 
 
+## Features
+
+* The syntax is simple, no knowledge of `Makefile` or `CMake` is required, and it is very simple to use only by modifying the value of the variable based on the template
+* Project structure based on the concept of component, which is convenient for building a project structure with a clear hierarchical structure
+* Calling between components only requires one statement to specify the dependencies (such as `list(APPEND ADD_REQUIREMENTS component1)`), without setting extra variables such as `INCLUDE path` to call the content of the dependent component in the source code
+* Use `Kconfig` to enable project components and code to be tailored and configured to facilitate the project to meet different needs
+* Conveniently introduce static libraries (`.a`) and dynamic libraries (`.so`) (such as `list(APPEND ADD_STATIC_LIB "lib/libtest.a")`)
+* Conveniently generate static libraries (`.a`) and dynamic libraries (`.so`) (by default, static libraries are generated. If you need components to generate dynamic libraries, you can use `register_component(DYNAMIC)` to register the module)
+* Using the `Python` script as an aid, you can easily add commands and tools, and you only need to execute simple commands to compile (such as `python project.py build` `python project.py menuconfig`)
+* Conveniently used as `SDK`, the project example can be placed directly in the `SDK` directory, or it can be placed anywhere on the disk separately, just set the environment variable `MY_SDK_PATH`
+
+
 ## Get Started
 
 ```
@@ -95,6 +107,13 @@ Files under the project directory:
 
 * `config_defaults.mk`: Optional, project default configuration file, the default configuration will be loaded when `cmake` execute. The format of the configuration is `Makefile`. You can use the terminal GUI configuration (`make menuconfig`) to generate the configuration file, the generated configuration file is in `build/config/global_config.mk`, then copy to `config_defaults.mk`.
 > Note: After modifying `config_defaults.mk`, you need to delete the files in the `build` directory (or just delete the `mk` file in the `build/config` directory) to regenerate, because the current build system will use the existing configuration file (`build/config/global_config.mk`)
+
+* `project.py`: tool script call entry, use `python project.py menuconfig` `python project.py build` and other commands to start building
+
+How to put the project directory anywhere on the disk:
+
+* Change the `MY_SDK_PATH` in `CMakeLists.txt` and `project.py` to the name of the environment variable you like, and then set the value of this environment variable in the terminal to the path of the `SDK`, you can change the project directory It can be compiled anywhere
+
 
 ## Store SDK and project directory separately
 
