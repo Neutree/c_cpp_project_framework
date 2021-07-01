@@ -87,10 +87,14 @@ function(register_component)
     endforeach()
 
     # Add blobal config include
-    target_include_directories(${component_name} PUBLIC ${global_config_dir})
+    if(${include_type} STREQUAL INTERFACE)
+        target_include_directories(${component_name} INTERFACE ${global_config_dir})
+    else()
+        target_include_directories(${component_name} PUBLIC ${global_config_dir})
+    endif()
 
     # Add requirements
-    target_link_libraries(${component_name} ${ADD_REQUIREMENTS})
+    target_link_libraries(${component_name} ${include_type} ${ADD_REQUIREMENTS})
 
     # Add definitions public
     foreach(difinition ${ADD_DEFINITIONS})
@@ -112,7 +116,7 @@ function(register_component)
                 endif()
                 set(lib ${lib_full})
             endif()
-            target_link_libraries(${component_name} ${lib})
+            target_link_libraries(${component_name} ${include_type} ${lib})
         endforeach()
     endif()
     # Add dynamic lib
@@ -129,7 +133,7 @@ function(register_component)
             list(APPEND dynamic_libs ${lib})
             get_filename_component(lib_dir ${lib} DIRECTORY)
             get_filename_component(lib_name ${lib} NAME)
-            target_link_libraries(${component_name} -L${lib_dir} ${lib_name})
+            target_link_libraries(${component_name} ${include_type} -L${lib_dir} ${lib_name})
         endforeach()
         set(g_dynamic_libs ${dynamic_libs}  CACHE INTERNAL "g_dynamic_libs")
     endif()
@@ -361,6 +365,14 @@ macro(project name)
         endif()
     endforeach()
     
+    # Remove duplicate dynamic libs from var g_dynamic_libs
+    set(dynamic_libs_abs "")
+    foreach(item ${g_dynamic_libs})
+    get_filename_component(item ${item} ABSOLUTE)
+    list(APPEND dynamic_libs_abs ${item})
+    endforeach()
+    set(g_dynamic_libs ${dynamic_libs_abs})
+    list(REMOVE_DUPLICATES g_dynamic_libs)
 
     # Add menuconfig target for makefile
     add_custom_target(menuconfig COMMAND ${generate_config_cmd2})
