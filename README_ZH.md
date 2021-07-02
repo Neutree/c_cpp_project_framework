@@ -33,45 +33,55 @@ C CPP Project Framework (Template)
 * 方便地生成静态库(`.a`) 和 动态库(`.so`) (默认生成静态库, 需要组件生成动态库,则使用`register_component(DYNAMIC)`注册模块即可)
 * 使用 `Python` 脚本作为辅助, 可方便地添加命令和工具, 编译只需要执行简单的命令即可(如`python project.py build` `python project.py menuconfig`)
 * 方便地作为 `SDK`, 工程实例可以直接放在`SDK`目录下, 也可以单独放在磁盘任何地方, 只需要设置环境变量`MY_SDK_PATH`即可
+* 交叉编译友好, 很好地作为嵌入式设备 `SDK`
 
 
 ## 快速上手
 
+* 克隆代码:
 ```
-cd examples/demo1
-# python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
-mkdir build && cd build
-cmake ..
-make menuconfig
-make -j10
-./build/demo1
-make clean
-rm -rf ./*
+git clone https://github.com/Neutree/c_cpp_project_framework --recursive
 ```
+> 参数 `--recursive` 是必须的, 是为了克隆子模块, 否则克隆下来的代码不完整
 
-or
+* 或者基于这个模板仓库创建一个你自己的 github 仓库:</br>点击 `use this template` 按钮即可</br>![](assets/image/use_template.png)
 
-```
-cd examples/demo1
-# python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
-python project.py menuconfig
-python project.py build
-./build/demo1
-python project.py clean
-python project.py distclean
-# python project.py clean_conf
-```
-
-* 切换工程目录
-* 设置工具链路径以及前缀（如果使用`gcc`不需要设置）
-* 建立一个临时目录并且切换当前路径到这个临时目录（`build`）
-* 使用命令 `cmake ..` 来生成 `Makefile`, 这里 `..` 表示上层目录，即项目的目录
-* 使用命令 `make menuconfig` 来通过终端图形界面配置工程, 这会在 `build/config` 目录生成几个配置文件（`global_config.*`), 我们可以直接在组件(`component`)的`CMakelists.txt` 文件中直接使用（详细看后面的说明）， 或者在 `C/CPP`源文件中通过语句 `#include "global_config.h"` 包含配置头文件来使用
-* 使用命令 `make` 来执行编译链接过程, 或者并行编译： [make -jN](http://www.gnu.org/software/make/manual/make.html#Parallel)， 以及通过 `make VERBOSE=1` 命令来打印编译时的调试信息
-
-可以点击 `use this template` 按钮来使用这个模板创建一个你自己的 `github` 工程
-
-![](assets/image/use_template.png)
+* 开始编译</br>有两种方法, 使用`project.py`脚本或者使用原生`CMake`命令
+  * 使用`project.py`脚本
+    ```
+    cd examples/demo1
+    # python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
+    python project.py menuconfig
+    python project.py build
+    ./build/demo1
+    python project.py clean
+    python project.py distclean
+    # python project.py clean_conf
+    ```
+    * 切换工程目录
+    * 设置工具链路径以及前缀（如果使用`gcc`不需要设置）
+    * 使用命令 `python project.py menuconfig` 来通过终端图形界面配置工程, 这会在 `build/config` 目录生成几个配置文件（`global_config.*`), 我们可以直接在组件(`component`)的`CMakelists.txt` 文件中直接使用（详细看后面的说明）， 或者在 `C/CPP`源文件中通过语句 `#include "global_config.h"` 包含配置头文件来使用
+    * 使用命令 `python project.py build` 来启动构建, 可以使用`python project.py build --verbose`命令来打印编译时的调试信息
+    * 使用`python project.py clean`来清除构建中间文件, 使用`python project.py distclean`来清楚`menuconfig`命令生成的文件, 这个命令不会清除工具链配置
+    * 使用`python project.py clean_conf`来清除工具链配置
+  * 使用原生`CMake`命令
+    ```
+    cd examples/demo1
+    # python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
+    mkdir build && cd build
+    cmake ..
+    make menuconfig
+    make -j10
+    ./build/demo1
+    make clean
+    rm -rf ./*
+    ```
+    * 切换工程目录
+    * 设置工具链路径以及前缀（如果使用`gcc`不需要设置）
+    * 建立一个临时目录并且切换当前路径到这个临时目录（`build`）
+    * 使用命令 `cmake ..` 来生成 `Makefile`, 这里 `..` 表示上层目录，即项目的目录
+    * 使用命令 `make menuconfig` 来通过终端图形界面配置工程, 这会在 `build/config` 目录生成几个配置文件（`global_config.*`), 我们可以直接在组件(`component`)的`CMakelists.txt` 文件中直接使用（详细看后面的说明）， 或者在 `C/CPP`源文件中通过语句 `#include "global_config.h"` 包含配置头文件来使用
+    * 使用命令 `make` 来执行编译链接过程, 或者并行编译： [make -jN](http://www.gnu.org/software/make/manual/make.html#Parallel)， 以及通过 `make VERBOSE=1` 命令来打印编译时的调试信息
 
 
 ## 目录结构
