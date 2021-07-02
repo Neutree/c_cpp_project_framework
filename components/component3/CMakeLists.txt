@@ -1,5 +1,5 @@
-# Config enable component2 or not in Kconfig
-if(CONFIG_COMPONENT2_ENABLED)
+# Config enable component3 or not in Kconfig
+if(CONFIG_COMPONENT3_ENABLED)
 
     ################# Add include #################
     list(APPEND ADD_INCLUDE "include"
@@ -47,6 +47,10 @@ if(CONFIG_COMPONENT2_ENABLED)
     ###############################################
 
     # register component, DYNAMIC or SHARED flags will make component compiled to dynamic(shared) lib
-    register_component(DYNAMIC)
+    if(CONFIG_COMPONENT3_DYNAMIC)
+        register_component(DYNAMIC)
+    else()
+        register_component()
+    endif()
 endif()
 
