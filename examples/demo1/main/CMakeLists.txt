@@ -39,6 +39,11 @@ endif()
 #                             -DAAAAA333=1)
 ###############################################
 
+############ Add static libs ##################
+#### Update parent's variables like CMAKE_C_LINK_FLAGS
+# set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -Wl,--start-group libmaix/libtest.a -ltest2 -Wl,--end-group" PARENT_SCOPE)
+###############################################
+
 
 
 register_component()
