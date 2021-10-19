@@ -176,15 +176,19 @@ python3 project.py build
 **MIT**， see [LICENSE](./LICENSE)
 
 
+## Open source projects used by this project
+
+* [Kconfiglib](https://github.com/ulfalizer/Kconfiglib)： `Kconfig`'s `Python` implementation
+
 ## Repos used this framwork
 
+* [Maix-Speech](https://github.com/sipeed/Maix-Speech): AI speech recognization lib for embedded devices
 * [MaixPy](https://github.com/sipeed/MaixPy/): `Micropython` port for `AIOT` chip `K210`
 * [libmaix](https://github.com/sipeed/libmaix): A lib for embeded AI model running with hardware accelaration
 * [MF1_SDK](https://github.com/sipeed/MF1_SDK): SDK for `MF1` AI module(board)
 
-## Other Reference
+## Other Similar Reference
 
 * [ESP_IDF](https://github.com/espressif/esp-idf)：  `SDK` of `ESP32`, Written very well
-* [Kconfiglib](https://github.com/ulfalizer/Kconfiglib)： `Kconfig`'s `Python` implementation
 * [RT-Thread](https://github.com/RT-Thread/rt-thread)：not `CMake`, but also use component
 

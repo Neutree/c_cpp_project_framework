@@ -16,6 +16,11 @@ list(APPEND ADD_SRCS  "src/lib1.c"
 # list(APPEND ADD_REQUIREMENTS component1)
 ###############################################
 
+###### Add link search path for requirements/libs ######
+# list(APPEND ADD_LINK_SEARCH_PATH "${CONFIG_TOOLCHAIN_PATH}/lib")
+list(APPEND ADD_REQUIREMENTS m)  # add system libs, pthread or m(math) lib for example
+###############################################
+
 ############ Add static libs ##################
 if(CONFIG_COMPONENT1_INCLUDE_STATIC_LIB)
     list(APPEND ADD_STATIC_LIB "lib/libtest.a")

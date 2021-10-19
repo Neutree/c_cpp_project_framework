@@ -23,7 +23,12 @@ if(CONFIG_COMPONENT3_ENABLED)
     ###### Add required/dependent components ######
     list(APPEND ADD_REQUIREMENTS component1)
     ###############################################
-    
+
+    ###### Add link search path for requirements/libs ######
+    # list(APPEND ADD_LINK_SEARCH_PATH "${CONFIG_TOOLCHAIN_PATH}/lib")
+    # list(APPEND ADD_REQUIREMENTS pthread m)  # add system libs, pthread and math lib for example here
+    ###############################################
+
     ############ Add static libs ##################
     # list(APPEND ADD_STATIC_LIB "lib/libtest.a")
     ###############################################

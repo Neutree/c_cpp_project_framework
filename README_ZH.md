@@ -170,17 +170,20 @@ python3 project.py build
 
 **MIT**: 详情看 [LICENSE](./LICENSE) 文件
 
+## 此工程使用到的开源项目
+
+* [Kconfiglib](https://github.com/ulfalizer/Kconfiglib)： `Kconfig` `Python` 实现
 
 ## 使用了此框架的仓库
 
+* [Maix-Speech](https://github.com/sipeed/Maix-Speech): 专为嵌入式环境设计的离线语音库
 * [MaixPy](https://github.com/sipeed/MaixPy/): 让针对`AIOT`应用的芯片`K210`用上`Micropython`
 * [libmaix](https://github.com/sipeed/libmaix): 支持多嵌入式平台的带硬件加速的 AI 模型运行库
 * [MF1_SDK](https://github.com/sipeed/MF1_SDK): `MF1` AI 模组（开发板）的 SDK
 
 
-## 相关参考项目
+## 相关类似参考项目
 
 * [ESP_IDF](https://github.com/espressif/esp-idf)： `ESP32` 的 `SDK`， 写得挺不错
-* [Kconfiglib](https://github.com/ulfalizer/Kconfiglib)： `Kconfig` `Python` 实现
 * [RT-Thread](https://github.com/RT-Thread/rt-thread)：不是用的 `CMake`, 但是也是使用了组件的概念
 
