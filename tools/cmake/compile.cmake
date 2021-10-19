@@ -93,9 +93,6 @@ function(register_component)
         target_include_directories(${component_name} PUBLIC ${global_config_dir})
     endif()
 
-    # Add requirements
-    target_link_libraries(${component_name} ${include_type} ${ADD_REQUIREMENTS})
-
     # Add definitions public
     foreach(difinition ${ADD_DEFINITIONS})
         target_compile_options(${component_name} PUBLIC ${difinition})
@@ -137,6 +134,9 @@ function(register_component)
         endforeach()
         set(g_dynamic_libs ${dynamic_libs}  CACHE INTERNAL "g_dynamic_libs")
     endif()
+
+    # Add requirements
+    target_link_libraries(${component_name} ${include_type} ${ADD_REQUIREMENTS})
 endfunction()
 
 function(is_path_component ret param_path)
@@ -332,13 +332,6 @@ macro(project name)
                                   )
     add_custom_target(update_build_info COMMAND ${gen_build_info_config_cmd})
 
-    # Create exe_src.c to satisfy cmake's `add_executable` interface!
-    set(exe_src ${CMAKE_BINARY_DIR}/exe_src.c)
-    add_executable(${name} "${exe_src}")
-    add_custom_command(OUTPUT ${exe_src} COMMAND ${CMAKE_COMMAND} -E touch ${exe_src} VERBATIM)
-    add_custom_target(gen_exe_src DEPENDS "${exe_src}")
-    add_dependencies(${name} gen_exe_src)
-    
     # Sort component according to priority.conf config file
     set(component_priority_conf_file "${PROJECT_PATH}/compile/priority.conf")
     set(sort_components ${python}  ${SDK_PATH}/tools/cmake/sort_components.py
@@ -368,14 +361,21 @@ macro(project name)
     # Remove duplicate dynamic libs from var g_dynamic_libs
     set(dynamic_libs_abs "")
     foreach(item ${g_dynamic_libs})
-    get_filename_component(item ${item} ABSOLUTE)
-    list(APPEND dynamic_libs_abs ${item})
+        get_filename_component(item ${item} ABSOLUTE)
+        list(APPEND dynamic_libs_abs ${item})
     endforeach()
     set(g_dynamic_libs ${dynamic_libs_abs})
     list(REMOVE_DUPLICATES g_dynamic_libs)
 
     # Add menuconfig target for makefile
     add_custom_target(menuconfig COMMAND ${generate_config_cmd2})
+
+    # Create dummy source file exe_src.c to satisfy cmake's `add_executable` interface!
+    set(exe_src ${CMAKE_BINARY_DIR}/exe_src.c)
+    add_executable(${name} "${exe_src}")
+    add_custom_command(OUTPUT ${exe_src} COMMAND ${CMAKE_COMMAND} -E touch ${exe_src} VERBATIM)
+    add_custom_target(gen_exe_src DEPENDS "${exe_src}")
+    add_dependencies(${name} gen_exe_src)
 
     # Add main component(lib)
     target_link_libraries(${name} main)
