@@ -35,7 +35,7 @@ The target developer of this project:
 * Using the `Python` script as an aid, you can easily add commands and tools, and you only need to execute simple commands to compile (such as `python project.py build` `python project.py menuconfig`)
 * Conveniently used as `SDK`, the project example can be placed directly in the `SDK` directory, or it can be placed anywhere on the disk separately, just set the environment variable `MY_SDK_PATH`
 * Cross-compilation friendly, well as an embedded device `SDK`
-* Support compile to WASM
+* Support compile to `WASM`(Web Assembly)
 
 ## Get Started
 

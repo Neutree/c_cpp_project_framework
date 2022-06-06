@@ -34,7 +34,7 @@ C CPP Project Framework (Template)
 * 使用 `Python` 脚本作为辅助, 可方便地添加命令和工具, 编译只需要执行简单的命令即可(如`python project.py build` `python project.py menuconfig`)
 * 方便地作为 `SDK`, 工程实例可以直接放在`SDK`目录下, 也可以单独放在磁盘任何地方, 只需要设置环境变量`MY_SDK_PATH`即可
 * 交叉编译友好, 很好地作为嵌入式设备 `SDK`
-* 支持编译成 `WASM`
+* 支持编译成 `WASM`（Web Assembly）
 
 
 ## 快速上手
@@ -168,6 +168,13 @@ python3 project.py build
 ```
 
 ## 编译成 WASM
+
+根据 [emscripten-core/emsdk](https://github.com/emscripten-core/emsdk) 先安装工具链
+```
+git clone https://github.com/emscripten-core/emsdk.git
+./emsdk install latest
+./emsdk activate latest
+```
 
 只需要
 ```
