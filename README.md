@@ -35,6 +35,7 @@ The target developer of this project:
 * Using the `Python` script as an aid, you can easily add commands and tools, and you only need to execute simple commands to compile (such as `python project.py build` `python project.py menuconfig`)
 * Conveniently used as `SDK`, the project example can be placed directly in the `SDK` directory, or it can be placed anywhere on the disk separately, just set the environment variable `MY_SDK_PATH`
 * Cross-compilation friendly, well as an embedded device `SDK`
+* Support compile to WASM
 
 ## Get Started
 
@@ -169,6 +170,32 @@ python3 project.py distclean
 ```
 python3 project.py menuconfig
 python3 project.py build
+```
+
+## Compile to WASM
+
+Install toolchain first according to [emscripten-core/emsdk](https://github.com/emscripten-core/emsdk)
+```
+git clone https://github.com/emscripten-core/emsdk.git
+./emsdk install latest
+./emsdk activate latest
+```
+
+Just only set toolchain
+```
+python project.py distclean
+python project.py --toolchain $EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake config
+python project.py build
+```
+
+Then you will find `demo1.html`, `demo1.js` and `demo1.wasm` files in `build` directory, run command below you will see result in browser:
+```
+emrun demo1.html
+```
+
+Or just run by `node`
+```
+node demo1.js
 ```
 
 ## License

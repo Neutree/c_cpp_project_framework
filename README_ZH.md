@@ -34,6 +34,7 @@ C CPP Project Framework (Template)
 * 使用 `Python` 脚本作为辅助, 可方便地添加命令和工具, 编译只需要执行简单的命令即可(如`python project.py build` `python project.py menuconfig`)
 * 方便地作为 `SDK`, 工程实例可以直接放在`SDK`目录下, 也可以单独放在磁盘任何地方, 只需要设置环境变量`MY_SDK_PATH`即可
 * 交叉编译友好, 很好地作为嵌入式设备 `SDK`
+* 支持编译成 `WASM`
 
 
 ## 快速上手
@@ -165,6 +166,26 @@ python3 project.py distclean
 python3 project.py menuconfig
 python3 project.py build
 ```
+
+## 编译成 WASM
+
+只需要
+```
+python project.py distclean
+python project.py --toolchain $EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake config
+python project.py build
+```
+
+在 `build` 目录就会出现`demo1.html`, `demo1.js` 和 `demo1.wasm`文件了，直接运行以下命令就会在浏览器执行结果并显示结果了
+```
+emrun demo1.html
+```
+
+或者也可以直接使用`node`即可运行
+```
+node demo1.js
+```
+
 
 ## 开源许可
 

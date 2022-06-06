@@ -8,8 +8,7 @@ set(CMAKE_C_FLAGS -Wall)
 set(CMAKE_CXX_FLAGS -Wall)
 ################################
 
-set(LINK_FLAGS -Wl,-EL
-            )
+# set(LINK_FLAGS -Wl,-EL) # (default little edian)
 set(CMAKE_C_LINK_FLAGS ${CMAKE_C_LINK_FLAGS}
                         ${LINK_FLAGS}
                         )
