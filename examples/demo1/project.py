@@ -14,7 +14,8 @@ sdk_env_name = "MY_SDK_PATH"
 # get SDK absolute path
 sdk_path = os.path.abspath(sys.path[0]+"/../../")
 try:
-    sdk_path = os.environ[sdk_env_name]
+    if os.environ[sdk_env_name] and os.path.exists(os.environ[sdk_env_name]):
+        sdk_path = os.environ[sdk_env_name]
 except Exception:
     pass
 print("-- SDK_PATH:{}".format(sdk_path))
