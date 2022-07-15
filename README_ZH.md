@@ -34,6 +34,7 @@ C CPP Project Framework (Template)
 * 使用 `Python` 脚本作为辅助, 可方便地添加命令和工具, 编译只需要执行简单的命令即可(如`python project.py build` `python project.py menuconfig`)
 * 方便地作为 `SDK`, 工程实例可以直接放在`SDK`目录下, 也可以单独放在磁盘任何地方, 只需要设置环境变量`MY_SDK_PATH`即可
 * 交叉编译友好, 很好地作为嵌入式设备 `SDK`
+* 生成各种 `IDE` 可以直接使用的工程文件, 可以方便地导入到各种 `IDE` 中使用
 * 支持编译成 `WASM`（Web Assembly）
 
 
@@ -62,7 +63,7 @@ git clone https://github.com/Neutree/c_cpp_project_framework --recursive
     * 切换工程目录
     * 设置工具链路径以及前缀（如果使用`gcc`不需要设置）
     * 使用命令 `python project.py menuconfig` 来通过终端图形界面配置工程, 这会在 `build/config` 目录生成几个配置文件（`global_config.*`), 我们可以直接在组件(`component`)的`CMakelists.txt` 文件中直接使用（详细看后面的说明）， 或者在 `C/CPP`源文件中通过语句 `#include "global_config.h"` 包含配置头文件来使用
-    * 使用命令 `python project.py build` 来启动构建, 可以使用`python project.py build --verbose`命令来打印编译时的调试信息
+    * 使用命令 `python project.py build` 来启动构建, 可以使用`python project.py build --verbose`命令来打印编译时的调试信息， 在遇到编译错误时十分有用
     * 使用`python project.py clean`来清除构建中间文件, 使用`python project.py distclean`来清楚`menuconfig`命令生成的文件, 这个命令不会清除工具链配置
     * 使用`python project.py clean_conf`来清除工具链配置
   * 使用原生`CMake`命令
@@ -165,6 +166,48 @@ python3 project.py distclean
 ```
 python3 project.py menuconfig
 python3 project.py build
+```
+
+## 更换工程生成器
+
+有时你可能需要更快的构建速度，或者需要生成一个工程给 IDE 使用，比如 Visual Studio，
+可以通过更改工程生成器实现， 默认的生成器是 `Unix Makefiles`。
+
+有多种生成器选择，比如 `Ninja`, `Visual Studio`, `Xcode`, `Eclipse`, `Unix Makefiles` 等等。
+执行命令 `cmake --help` 可以查看生成器选择，不同的系统支持不同的生成器。
+比如 Linux 下：
+```
+Generators
+
+The following generators are available on this platform (* marks default):
+  Green Hills MULTI            = Generates Green Hills MULTI files
+                                 (experimental, work-in-progress).
+* Unix Makefiles               = Generates standard UNIX makefiles.
+  Ninja                        = Generates build.ninja files.
+  Ninja Multi-Config           = Generates build-<Config>.ninja files.
+  Watcom WMake                 = Generates Watcom WMake makefiles.
+  CodeBlocks - Ninja           = Generates CodeBlocks project files.
+  CodeBlocks - Unix Makefiles  = Generates CodeBlocks project files.
+  CodeLite - Ninja             = Generates CodeLite project files.
+  CodeLite - Unix Makefiles    = Generates CodeLite project files.
+  Eclipse CDT4 - Ninja         = Generates Eclipse CDT 4.0 project files.
+  Eclipse CDT4 - Unix Makefiles= Generates Eclipse CDT 4.0 project files.
+  Kate - Ninja                 = Generates Kate project files.
+  Kate - Unix Makefiles        = Generates Kate project files.
+  Sublime Text 2 - Ninja       = Generates Sublime Text 2 project files.
+  Sublime Text 2 - Unix Makefiles
+                               = Generates Sublime Text 2 project files.
+```
+
+通过 `config` 命令来更改生成器
+```
+# 首先清理干净之前的构建缓存（就是删除 build 目录）
+python project.py distclean
+
+python project.py -G Ninja config
+# python project.py -G "Eclipse CDT4 - Ninja" config
+
+python project.py build
 ```
 
 ## 编译成 WASM

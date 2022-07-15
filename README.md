@@ -35,6 +35,7 @@ The target developer of this project:
 * Using the `Python` script as an aid, you can easily add commands and tools, and you only need to execute simple commands to compile (such as `python project.py build` `python project.py menuconfig`)
 * Conveniently used as `SDK`, the project example can be placed directly in the `SDK` directory, or it can be placed anywhere on the disk separately, just set the environment variable `MY_SDK_PATH`
 * Cross-compilation friendly, well as an embedded device `SDK`
+* Generate a variety of `IDE` supported projects, then you can directly import to IDE as a project
 * Support compile to `WASM`(Web Assembly)
 
 ## Get Started
@@ -54,6 +55,7 @@ git clone https://github.com/Neutree/c_cpp_project_framework --recursive
     # python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
     python project.py menuconfig
     python project.py build
+    # you can use --verbose arg to see more compile info, this is useful when error occurs
     # python project.py build --verbose
     ./build/demo1
     python project.py clean
@@ -170,6 +172,48 @@ python3 project.py distclean
 ```
 python3 project.py menuconfig
 python3 project.py build
+```
+
+## Change project generator
+
+Sometimes you want to faster build speed or generate project for some IDE like Visual Studio,
+you can change generator to achieve this, default generator is `Unix Makefiles`.
+
+There are many generator choices, such as `Ninja`, `Visual Studio`, `Xcode`, `Eclipse`, `Unix Makefiles` etc.
+Execute command `cmake --help` to see the generator choices, different system support different generators.
+Linux for example:
+```
+Generators
+
+The following generators are available on this platform (* marks default):
+  Green Hills MULTI            = Generates Green Hills MULTI files
+                                 (experimental, work-in-progress).
+* Unix Makefiles               = Generates standard UNIX makefiles.
+  Ninja                        = Generates build.ninja files.
+  Ninja Multi-Config           = Generates build-<Config>.ninja files.
+  Watcom WMake                 = Generates Watcom WMake makefiles.
+  CodeBlocks - Ninja           = Generates CodeBlocks project files.
+  CodeBlocks - Unix Makefiles  = Generates CodeBlocks project files.
+  CodeLite - Ninja             = Generates CodeLite project files.
+  CodeLite - Unix Makefiles    = Generates CodeLite project files.
+  Eclipse CDT4 - Ninja         = Generates Eclipse CDT 4.0 project files.
+  Eclipse CDT4 - Unix Makefiles= Generates Eclipse CDT 4.0 project files.
+  Kate - Ninja                 = Generates Kate project files.
+  Kate - Unix Makefiles        = Generates Kate project files.
+  Sublime Text 2 - Ninja       = Generates Sublime Text 2 project files.
+  Sublime Text 2 - Unix Makefiles
+                               = Generates Sublime Text 2 project files.
+```
+
+You can change it by `config` command
+```
+# clean all build files first(remove build dir)
+python project.py distclean
+
+python project.py -G Ninja config
+# python project.py -G "Eclipse CDT4 - Ninja" config
+
+python project.py build
 ```
 
 ## Compile to WASM
