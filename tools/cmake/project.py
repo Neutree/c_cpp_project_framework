@@ -122,6 +122,18 @@ def dump_config_mk(configs, path):
                 v = '"' + v + '"'
             f.write("{}={}\n".format(k, v))
 
+def get_config_files(config_file, sdk_path, project_path):
+    files = []
+    config_mk = os.path.join(project_path, ".config.mk")
+    config_default = os.path.join(project_path, "config_defaults.mk")
+    if config_file and os.path.exists(config_file):
+        files.append(config_file)
+    elif os.path.exists(config_default):
+        files.append(config_default)
+    if os.path.exists(config_mk):
+        files.append(config_mk)
+    return files
+
 configs = load_config_mk(config_filename)
 configs_old = configs.copy()
 
@@ -210,7 +222,8 @@ elif project_args.cmd == "menuconfig":
     if not os.path.exists("build"):
         os.mkdir("build")
     os.chdir("build")
-    if not os.path.exists("build/Makefile"):
+    binary_path = os.path.abspath(os.getcwd())
+    if not os.path.exists("build/config/global_config.mk"):
         if not os.path.isabs(project_args.config_file):
             project_args.config_file = os.path.join(project_path, project_args.config_file)
         config_path = os.path.abspath(project_args.config_file)
@@ -220,7 +233,21 @@ elif project_args.cmd == "menuconfig":
         res = subprocess.call(["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"], "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
         if res != 0:
             exit(1)
-    res = subprocess.call(["cmake", "--build", ".", "--target", "menuconfig"])
+    # res = subprocess.call(["cmake", "--build", ".", "--parallel", "1", "--target", "menuconfig"])
+    tool_path = os.path.join(sdk_path, "tools/kconfig/genconfig.py")
+    if not os.path.exists(tool_path):
+        print("[ERROR] kconfig tool not found:", tool_path)
+        exit(1)
+    # get default files
+    config_files = get_config_files(project_args.config_file, sdk_path, project_path)
+    cmd = [sys.executable, tool_path, "--kconfig", os.path.join(sdk_path, "Kconfig")]
+    for path in config_files:
+        cmd.extend(["--defaults", path])
+    cmd.extend(["--menuconfig", "True", "--env", f"SDK_PATH={sdk_path}", "--env", f"PROJECT_PATH={project_path}"])
+    cmd.extend(["--output", "makefile", os.path.join(binary_path, "config", "global_config.mk")])
+    cmd.extend(["--output", "cmake", os.path.join(binary_path, "config", "global_config.cmake")])
+    cmd.extend(["--output", "header", os.path.join(binary_path, "config", "global_config.h")])
+    res = subprocess.call(cmd)
     if res != 0:
         exit(1)
 # flash
