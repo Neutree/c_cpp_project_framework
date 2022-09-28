@@ -351,7 +351,7 @@ macro(project name)
     set(CMAKE_C_COMPILER_WORKS 1)
     set(CMAKE_CXX_COMPILER_WORKS 1)
 
-    
+
     # set(CMAKE_SYSTEM_NAME Generic) # set this flag may leads to dymamic(/shared) lib compile fail
 
     # Declare project # This function will cler flags!
@@ -360,8 +360,12 @@ macro(project name)
     if(CMAKE_EXECUTABLE_SUFFIX STREQUAL ".js") # generate js ang html file for WASM
         set(CMAKE_EXECUTABLE_SUFFIX ".html")
     endif()
-    
-    include(${SDK_PATH}/tools/cmake/compile_flags.cmake)
+
+    if(EXISTS "${PROJECT_PATH}/compile/compile_flags.cmake")
+        include("${PROJECT_PATH}/compile/compile_flags.cmake")
+    else()
+        include("${SDK_PATH}/tools/cmake/compile_flags.cmake")
+    endif()
 
     # Add dependence: update configfile, append time and git info for global config header file
     # we didn't generate build info for cmake and makefile for if we do, it will always rebuild cmake
@@ -417,7 +421,11 @@ macro(project name)
     target_link_libraries(${name} main)
 
     # Add binary
-    include("${SDK_PATH}/tools/cmake/gen_binary.cmake")
+    if(EXISTS "${PROJECT_PATH}/compile/gen_binary.cmake")
+        include("${PROJECT_PATH}/compile/gen_binary.cmake")
+    else()
+        include("${SDK_PATH}/tools/cmake/gen_binary.cmake")
+    endif()
 
 endmacro()
 
