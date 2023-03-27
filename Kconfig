@@ -5,7 +5,7 @@ menu "Toolchain configuration"
 	config TOOLCHAIN_PATH
 		string "toolchain path"
 		default ""
-	
+
 	config TOOLCHAIN_PREFIX
 		string "toolchain prefix"
 		default ""

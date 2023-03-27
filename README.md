@@ -55,9 +55,10 @@ git clone https://github.com/Neutree/c_cpp_project_framework --recursive
     # python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
     python project.py menuconfig
     python project.py build
+    # python project.py rebuild    # when you add/remove source files, should use this command instead of build
     # you can use --verbose arg to see more compile info, this is useful when error occurs
     # python project.py build --verbose
-    ./build/demo1
+    python project.py run        # or ./build/demo1
     python project.py clean
     python project.py distclean
     # python project.py clean_conf
@@ -174,6 +175,19 @@ python3 project.py menuconfig
 python3 project.py build
 ```
 
+## Debug and Release version
+
+By default, it is compiled in debug version. If you want to release version, you can use the following command:
+```shell
+python project.py distclean
+python project.py build --release
+```
+
+Then the binary file built is the release version, and the compilation script does a few actions:
+* Set the CMake environment variable `CMAKE_BUILD_TYPE` to `MinSizeRel` (default is `Debug`)
+* Add `#define RELEASE 1` to the generated header file `global_config.h` (default will add `#define DEBUG 1`)
+* Automatically add the macro definition `RELEASE=1` when compiling, so the code actually does not need to import `global_config.h` can also through `RELEASE` and `DEBUG` macro definition to determine whether the current is release version or debug version
+
 ## Change project generator
 
 Sometimes you want to faster build speed or generate project for some IDE like Visual Studio,
@@ -241,6 +255,11 @@ Or just run by `node`
 ```
 node demo1.js
 ```
+
+## Add command
+
+By default we can use `python project.py run` to call [tools/run.py](./tools/run.py) file, and execute the binary file.
+If you want to add commands for your SDK, just create new `py` file in tools directory, write a script and content refer to [tools/run.py](./tools/run.py).
 
 ## License
 

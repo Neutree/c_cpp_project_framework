@@ -7,10 +7,10 @@ jobs:
 
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 6
+      max-parallel: 7
       matrix:
-        python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
-        cmake-version: [3.12.4]
+        python-version: ["2.7", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10"]
+        cmake-version: ["3.12.4"]
 
     steps:
     - uses: actions/checkout@master
@@ -28,6 +28,7 @@ jobs:
       run: |
         cd examples/demo1
         python project.py build
-        ./build/demo1
+        python project.py rebuild
+        python project.py run
         python project.py clean
         python project.py distclean

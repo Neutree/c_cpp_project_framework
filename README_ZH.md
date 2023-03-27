@@ -55,7 +55,10 @@ git clone https://github.com/Neutree/c_cpp_project_framework --recursive
     # python project.py --toolchain /opt/toolchain/bin --toolchain-prefix mips-elf- config
     python project.py menuconfig
     python project.py build
-    ./build/demo1
+    # python project.py rebuild    # 当删减了文件时, 需要使用此命令而不是 build 命令
+    # 可以使用 --verbose 参数来打印编译时的调试信息，在编译出现问题时十分有用
+    # python project.py build --verbose
+    python project.py run        # 或者 ./build/demo1
     python project.py clean
     python project.py distclean
     # python project.py clean_conf
@@ -94,7 +97,7 @@ git clone https://github.com/Neutree/c_cpp_project_framework --recursive
 | assets         | 存放多媒体资源的文件夹，比如图片等，如果不需要可以删除 |
 | components     | 组件(component)都放在这里 |
 | examples       | 工程目录，或者例程目录；在 `SDK` 项目中这个目录是可以和 `SDK` 目录分开放的， 只需要设置环境变量`MY_SDK_PATH`为`SDK`目录路径即可 |
-| tools          | 工具目录比如 `cmake`、`kconfig`、`burn tool` etc. |
+| tools          | 工具目录比如 `cmake`、`kconfig`、`burn tool` 等等 |
 | Kconfig        | `Kconfig` 的最顶层配置 |
 
 ### 1) 组件（component）
@@ -168,6 +171,20 @@ python3 project.py menuconfig
 python3 project.py build
 ```
 
+## 调试版本和发布版本
+
+默认都是以 debug 版本编译，如果要发布版本，可以使用以下命令：
+```shell
+python project.py distclean
+python project.py build --release
+```
+
+此时构建的二进制文件就是 release 版本，编译脚本做了几个动作：
+* 设置 CMake 环境变量 `CMAKE_BUILD_TYPE` 为 `MinSizeRel`（默认是 `Debug`）
+* 在生成的头文件`global_config.h`中添加了 `#define RELEASE 1`(默认会加`#define DEBUG 1`)
+* 在编译时自动添加了`RELEASE=1`的宏定义，所以代码其实不用引入`global_config.h`也可以通过`RELEASE`和`DEBUG`宏定义判断当前是 release 版本还是 debug 版本
+
+
 ## 更换工程生成器
 
 有时你可能需要更快的构建速度，或者需要生成一个工程给 IDE 使用，比如 Visual Studio，
@@ -235,6 +252,11 @@ emrun demo1.html
 ```
 node demo1.js
 ```
+
+## 增加新的命令
+
+比如默认使用 `python project.py run` 命令会调用`tools/run.py`脚本来执行构建出来的可执行文件。
+如果你需要给你的 SDK 增加命令，只需要创建一个新的文件，参考[tools/run.py](./tools/run.py)文件的写法即可
 
 
 ## 开源许可

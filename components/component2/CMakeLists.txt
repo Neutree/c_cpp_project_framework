@@ -10,6 +10,9 @@ if(CONFIG_COMPONENT2_ENABLED)
     ############## Add source files ###############
     list(APPEND ADD_SRCS  "src/lib2.c"
         )
+    # FILE(GLOB_RECURSE EXTRA_SRC  "src/*.c")
+    # FILE(GLOB EXTRA_SRC  "src/*.c")
+    # list(APPEND ADD_SRCS  ${EXTRA_SRC})
     # aux_source_directory(src ADD_SRCS)  # collect all source file in src dir, will set var ADD_SRCS
     # append_srcs_dir(ADD_SRCS "src")     # append source file in src dir to var ADD_SRCS
     # list(REMOVE_ITEM COMPONENT_SRCS "src/test.c")
@@ -27,8 +30,10 @@ if(CONFIG_COMPONENT2_ENABLED)
     ###### Add link search path for requirements/libs ######
     # list(APPEND ADD_LINK_SEARCH_PATH "${CONFIG_TOOLCHAIN_PATH}/lib")
     # list(APPEND ADD_REQUIREMENTS pthread m)  # add system libs, pthread and math lib for example here
+    # set (OpenCV_DIR opencv/lib/cmake/opencv4)
+    # find_package(OpenCV REQUIRED)
     ###############################################
-    
+
     ############ Add static libs ##################
     # list(APPEND ADD_STATIC_LIB "lib/libtest.a")
     ###############################################

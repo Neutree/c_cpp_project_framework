@@ -1,7 +1,7 @@
 #
 # @file from https://github.com/Neutree/c_cpp_project_framework
 # @author neucrack
-# @license Apache 2.0
+# @license MIT
 #
 
 import argparse
@@ -12,6 +12,7 @@ import json
 
 
 parser = argparse.ArgumentParser(add_help=False, prog="flash.py")
+cmds = ["flash"]
 
 ############################### Add option here #############################
 parser.add_argument("-p", "--port", help="flash device port", default="")
@@ -25,11 +26,24 @@ dict_arg = {"port":"",
 dict_arg_not_save = ["terminal"]
 #############################################################################
 
-# use project_args created by SDK_PATH/tools/cmake/project.py
+# use project_args created by SDK_PATH/tools/cmake/project.py, e.g. project_args.terminal
 
 # args = parser.parse_args()
-if __name__ == '__main__':
+def main(vars):
+    '''
+        @vars: dict,
+            "project_path": project_path,
+            "project_name": project_name,
+            "sdk_path": sdk_path,
+            "build_type": build_type,
+            "project_parser": project_parser,
+            "project_args": project_args,
+            "configs": configs,
+    '''
     firmware = ""
+    project_path = vars["project_path"]
+    project_args = vars["project_args"]
+    project_parser = vars["project_parser"]
     try:
         flash_conf_path = project_path+"/.flash.conf.json"
         if project_args.cmd == "clean_conf":
@@ -95,3 +109,5 @@ if __name__ == '__main__':
     ######################################################
     print("== flash end ==")
 
+if __name__ == '__main__':
+    main()

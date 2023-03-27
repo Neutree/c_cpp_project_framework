@@ -7,5 +7,5 @@ menuconfig COMPONENT3_ENABLED
         bool "compile component as dynamic(shared) lib"
         default y
         depends on COMPONENT3_ENABLED
-    
+
 

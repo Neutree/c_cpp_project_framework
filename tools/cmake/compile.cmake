@@ -286,6 +286,7 @@ macro(project name)
                             --menuconfig False
                             --env "SDK_PATH=${SDK_PATH}"
                             --env "PROJECT_PATH=${PROJECT_SOURCE_DIR}"
+                            --env "BUILD_TYPE=${CMAKE_BUILD_TYPE}"
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
                             --output header ${PROJECT_BINARY_DIR}/config/global_config.h
@@ -296,6 +297,7 @@ macro(project name)
                             --menuconfig True
                             --env "SDK_PATH=${SDK_PATH}"
                             --env "PROJECT_PATH=${PROJECT_SOURCE_DIR}"
+                            --env "BUILD_TYPE=${CMAKE_BUILD_TYPE}"
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
                             --output header ${PROJECT_BINARY_DIR}/config/global_config.h
@@ -365,6 +367,13 @@ macro(project name)
         include("${PROJECT_PATH}/compile/compile_flags.cmake")
     else()
         include("${SDK_PATH}/tools/cmake/compile_flags.cmake")
+    endif()
+
+    # add DEBUG or RELEASE flag globally
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_definitions(-DDEBUG=1)
+    else()
+        add_definitions(-DRELEASE=1)
     endif()
 
     # Add dependence: update configfile, append time and git info for global config header file

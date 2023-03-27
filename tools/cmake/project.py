@@ -1,7 +1,7 @@
 #
 # @file from https://github.com/Neutree/c_cpp_project_framework
 # @author neucrack
-# @license Apache 2.0
+# @license MIT
 #
 
 
@@ -34,12 +34,28 @@ if project_name == "":
     print("[ERROR] Can not find project name in {}, not set(PROJECT_NAME {})".format(project_cmake_path, "${project_name}"))
     exit(1)
 
+# find extra tools
+tools_dir = os.path.join(sdk_path, "tools")
+sys.path.insert(1, tools_dir)
+# find all .py files in tools dir
+extra_tools_names = []
+parsers = []
+extra_tools = {}
+for name in os.listdir(tools_dir):
+    if name.endswith(".py"):
+        extra_tools_names.append(name[:-3])
+# import all tools
+for name in extra_tools_names:
+    # import from tool file
+    tool = __import__(name)
+    hasattr(tool, "parser") and parsers.append(tool.parser)
+    if hasattr(tool, "cmds"):
+        for cmd in tool.cmds:
+            if cmd in extra_tools:
+                raise Exception("duplicate command: {}, check tools' cmds variable".format(cmd))
+            extra_tools[cmd] = tool
 
-flash_dir = sdk_path+"/tools/flash"
-if os.path.exists(flash_dir):
-    sys.path.insert(1, flash_dir)
-    from flash import parser as flash_parser
-project_parser = argparse.ArgumentParser(description='build tool, e.g. `python project.py build`', prog="project.py", parents=[flash_parser])
+project_parser = argparse.ArgumentParser(description='build tool, e.g. `python project.py build`', prog="project.py", parents=parsers)
 
 project_parser.add_argument('--toolchain',
                         help='toolchain path ( absolute path )',
@@ -59,6 +75,7 @@ project_parser.add_argument('--verbose',
                         action="store_true",
                         default=False)
 project_parser.add_argument('-G', '--generator', default="", help="project type to generate, supported type on your platform see `cmake --help`")
+project_parser.add_argument('--release', action="store_true", default=False, help="release mode, default is debug mode")
 
 cmd_help ='''
 project command:
@@ -73,9 +90,11 @@ distclean:  clean all build files and configuration except configuration confige
 flash:      burn firmware to board's flash
 '''
 
+cmd_choices = ["config", "build", "rebuild", "menuconfig", "clean", "distclean", "clean_conf"]
+cmd_choices.extend(list(extra_tools.keys()))
 project_parser.add_argument("cmd",
                     help=cmd_help,
-                    choices=["config", "build", "rebuild", "menuconfig", "clean", "distclean", "clean_conf", "flash"]
+                    choices=cmd_choices
                     )
 
 project_args = project_parser.parse_args()
@@ -159,6 +178,9 @@ if configs != configs_old:
         os.remove("build/config/global_config.mk")
     print("generate config file at: {}".format(config_filename))
 
+build_type = "MinSizeRel" if project_args.release else "Debug"
+thread_num = cpu_count()
+print("-- CPU count: {}".format(thread_num))
 # config
 if project_args.cmd == "config":
     print("config complete")
@@ -176,13 +198,16 @@ elif project_args.cmd == "build" or project_args.cmd == "rebuild":
         if not os.path.exists(config_path):
             print("config file path error:{}".format(config_path))
             exit(1)
-        res = subprocess.call(["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"], "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
+        print("-- build type: {}".format(build_type))
+        res = subprocess.call(["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"],
+                               "-DCMAKE_BUILD_TYPE={}".format(build_type),
+                               "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
         if res != 0:
             exit(1)
     if project_args.verbose:
         res = subprocess.call(["cmake", "--build", ".", "--target", "all", "--verbose"])
     else:
-        res = subprocess.call(["cmake", "--build", ".", "--target", "all"])
+        res = subprocess.call(["cmake", "--build", ".", "--parallel", f"{thread_num}", "--target", "all"])
     if res != 0:
         exit(1)
 
@@ -230,10 +255,13 @@ elif project_args.cmd == "menuconfig":
         if not os.path.exists(config_path):
             print("config file path error:{}".format(config_path))
             exit(1)
-        res = subprocess.call(["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"], "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
+        res = subprocess.call(["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"], 
+                               "-DCMAKE_BUILD_TYPE={}".format(build_type),
+                               "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
         if res != 0:
             exit(1)
     # res = subprocess.call(["cmake", "--build", ".", "--parallel", "1", "--target", "menuconfig"])
+    # when use Ninja, menuconfig will not work, so use python script instead, need help here, PR is welcome
     tool_path = os.path.join(sdk_path, "tools/kconfig/genconfig.py")
     if not os.path.exists(tool_path):
         print("[ERROR] kconfig tool not found:", tool_path)
@@ -243,18 +271,15 @@ elif project_args.cmd == "menuconfig":
     cmd = [sys.executable, tool_path, "--kconfig", os.path.join(sdk_path, "Kconfig")]
     for path in config_files:
         cmd.extend(["--defaults", path])
-    cmd.extend(["--menuconfig", "True", "--env", f"SDK_PATH={sdk_path}", "--env", f"PROJECT_PATH={project_path}"])
+    cmd.extend(["--menuconfig", "True", "--env", f"SDK_PATH={sdk_path}",
+                                        "--env", f"PROJECT_PATH={project_path}",
+                                        "--env", f"BUILD_TYPE={build_type}"])
     cmd.extend(["--output", "makefile", os.path.join(binary_path, "config", "global_config.mk")])
     cmd.extend(["--output", "cmake", os.path.join(binary_path, "config", "global_config.cmake")])
     cmd.extend(["--output", "header", os.path.join(binary_path, "config", "global_config.h")])
     res = subprocess.call(cmd)
     if res != 0:
         exit(1)
-# flash
-elif project_args.cmd == "flash":
-    flash_file_path = os.path.abspath(sdk_path+"/tools/flash/flash.py")
-    with open(flash_file_path) as f:
-        exec(f.read())
 # clean_conf
 elif project_args.cmd == "clean_conf":
     print("clean now")
@@ -264,10 +289,25 @@ elif project_args.cmd == "clean_conf":
     if os.path.exists("build/config/"):
         shutil.rmtree("build/config")
     # clean flash config file
-    flash_file_path = os.path.abspath(sdk_path+"/tools/flash/flash.py")
+    flash_file_path = os.path.abspath(sdk_path+"/tools/flash.py")
     with open(flash_file_path) as f:
         exec(f.read())
     print("clean complete")
+# extra tools
+elif project_args.cmd in list(extra_tools.keys()):
+    tool = extra_tools[project_args.cmd]
+    vars = {
+        "project_path": project_path,
+        "project_name": project_name,
+        "sdk_path": sdk_path,
+        "build_type": build_type,
+        "project_parser": project_parser,
+        "project_args": project_args,
+        "configs": configs,
+    }
+    print(f"\n-------- {project_args.cmd} start ---------")
+    tool.main(vars)
+    print(f"-------- {project_args.cmd} end ---------")
 else:
     print("Error: Unknown command")
     exit(1)
