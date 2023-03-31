@@ -55,7 +55,7 @@ build
 .vscode
 .config
 .config.old
-
+.config.mk
 
 # python
 *.pyc
