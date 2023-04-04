@@ -50,10 +50,10 @@ for name in extra_tools_names:
     tool = __import__(name)
     hasattr(tool, "parser") and parsers.append(tool.parser)
     if hasattr(tool, "cmds"):
-        for cmd in tool.cmds:
-            if cmd in extra_tools:
-                raise Exception("duplicate command: {}, check tools' cmds variable".format(cmd))
-            extra_tools[cmd] = tool
+        extra_tools[tool.__name__] = {
+            "tool": tool,
+            "cmds": tool.cmds,
+        }
 
 project_parser = argparse.ArgumentParser(description='build tool, e.g. `python project.py build`', prog="project.py", parents=parsers)
 
@@ -91,7 +91,9 @@ flash:      burn firmware to board's flash
 '''
 
 cmd_choices = ["config", "build", "rebuild", "menuconfig", "clean", "distclean", "clean_conf"]
-cmd_choices.extend(list(extra_tools.keys()))
+for k, v in extra_tools.items():
+    cmd_choices.extend(v["cmds"])
+cmd_choices = list(set(cmd_choices))
 project_parser.add_argument("cmd",
                     help=cmd_help,
                     choices=cmd_choices
@@ -288,26 +290,39 @@ elif project_args.cmd == "clean_conf":
         os.remove(config_filename)
     if os.path.exists("build/config/"):
         shutil.rmtree("build/config")
-    # clean flash config file
-    flash_file_path = os.path.abspath(sdk_path+"/tools/flash.py")
-    with open(flash_file_path) as f:
-        exec(f.read())
+    # clean extra tools config file
+    for k, v in extra_tools.items():
+        if project_args.cmd in v["cmds"]:
+            vars = {
+                "project_path": project_path,
+                "project_name": project_name,
+                "sdk_path": sdk_path,
+                "build_type": build_type,
+                "project_parser": project_parser,
+                "project_args": project_args,
+                "configs": configs,
+            }
+            print("-- call tool <{}>'s clean_conf cmd".format(k))
+            v["tool"].main(vars)
     print("clean complete")
 # extra tools
-elif project_args.cmd in list(extra_tools.keys()):
-    tool = extra_tools[project_args.cmd]
-    vars = {
-        "project_path": project_path,
-        "project_name": project_name,
-        "sdk_path": sdk_path,
-        "build_type": build_type,
-        "project_parser": project_parser,
-        "project_args": project_args,
-        "configs": configs,
-    }
-    print(f"\n-------- {project_args.cmd} start ---------")
-    tool.main(vars)
-    print(f"-------- {project_args.cmd} end ---------")
+elif project_args.cmd in cmd_choices:
+    for k, v in extra_tools.items():
+        if project_args.cmd in v["cmds"]:
+            tool = v["tool"]
+            vars = {
+                "project_path": project_path,
+                "project_name": project_name,
+                "sdk_path": sdk_path,
+                "build_type": build_type,
+                "project_parser": project_parser,
+                "project_args": project_args,
+                "configs": configs,
+            }
+            print(f"\n-------- {project_args.cmd} start ---------")
+            ret = tool.main(vars)
+            print(f"-------- {project_args.cmd} end ---------")
+            exit(ret)
 else:
     print("Error: Unknown command")
     exit(1)

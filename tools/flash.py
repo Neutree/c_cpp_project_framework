@@ -12,7 +12,7 @@ import json
 
 
 parser = argparse.ArgumentParser(add_help=False, prog="flash.py")
-cmds = ["flash"]
+cmds = ["flash", "clean_conf"]
 
 ############################### Add option here #############################
 parser.add_argument("-p", "--port", help="flash device port", default="")
@@ -49,10 +49,10 @@ def main(vars):
         if project_args.cmd == "clean_conf":
             if os.path.exists(flash_conf_path):
                 os.remove(flash_conf_path)
-            exit(0)
+            return 0
         if project_args.cmd != "flash":
             print("call flash.py error")
-            exit(1)
+            return 1
     except Exception:
         print("-- call flash.py directly!")
         parser.add_argument("firmware", help="firmware file name")
@@ -61,7 +61,7 @@ def main(vars):
         project_path = ""
         if not os.path.exists(project_args.firmware):
             print("firmware not found:{}".format(project_args.firmware))
-            exit(1)
+            return 1
         firmware = project_args.firmware
         sdk_path = ""
 
@@ -104,7 +104,7 @@ def main(vars):
 
     if config["port"] == "":
         print("[ERROR] Invalid port:{}, set by -p or --port, e.g. -p /dev/ttyUSB0".format(config["port"]))
-        exit(1)
+        return 1
 
     ######################################################
     print("== flash end ==")
