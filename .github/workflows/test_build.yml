@@ -29,6 +29,10 @@ jobs:
         cd examples/demo1
         python project.py build
         python project.py rebuild
+        ls -al build/demo1 | awk '{print "program file size: " $5 "B"}'
         python project.py run
         python project.py clean
+        python project.py distclean
+        python project.py build --release
+        ls -al build/demo1 | awk '{print "program file size: " $5 "B"}'
         python project.py distclean

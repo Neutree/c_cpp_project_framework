@@ -76,6 +76,7 @@ project_parser.add_argument('--verbose',
                         default=False)
 project_parser.add_argument('-G', '--generator', default="", help="project type to generate, supported type on your platform see `cmake --help`")
 project_parser.add_argument('--release', action="store_true", default=False, help="release mode, default is debug mode")
+project_parser.add_argument('--build-type', default=None, help="build type, [Debug, Release, MinRelSize, RelWithDebInfo], you can also set build type by CMAKE_BUILD_TYPE environment variable")
 
 cmd_help ='''
 project command:
@@ -180,7 +181,14 @@ if configs != configs_old:
         os.remove("build/config/global_config.mk")
     print("generate config file at: {}".format(config_filename))
 
-build_type = "MinSizeRel" if project_args.release else "Debug"
+if project_args.build_type:
+    build_type = project_args.build_type
+elif project_args.release:
+    build_type = "MinSizeRel"
+elif "CMAKE_BUILD_TYPE" in os.environ:
+    build_type = os.environ["CMAKE_BUILD_TYPE"]
+else:
+    build_type = "Debug"
 thread_num = cpu_count()
 print("-- CPU count: {}".format(thread_num))
 # config

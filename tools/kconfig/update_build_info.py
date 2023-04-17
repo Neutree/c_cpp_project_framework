@@ -114,7 +114,7 @@ def append_time_info(time_info_filename, version_info_filename, file_type):
     # remove old config info
     content = remove_old_config_info(str_time_define_start, str_time_define_end, content)
     content2 = remove_old_config_info(str_time_define_start, str_time_define_end, content2)
-    
+
     # time info
     time_define = append_format_time_str.format(time_now.tm_year,
                                         time_now.tm_mon,
@@ -211,9 +211,11 @@ def append_time_info(time_info_filename, version_info_filename, file_type):
         content = (time_define+str_time_define_end).join(content)
         content2 = (git_define+str_time_define_end).join(content2)
     # update config file
+    os.makedirs(os.path.dirname(time_info_filename), exist_ok=True)
     with open(time_info_filename, "w") as f:
         f.write(content)
     if version_info_filename and content2 != content2_old:
+        os.makedirs(os.path.dirname(version_info_filename), exist_ok=True)
         with open(version_info_filename, "w") as f:
             f.write(content2)
 
