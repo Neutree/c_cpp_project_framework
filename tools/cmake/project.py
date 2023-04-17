@@ -15,6 +15,7 @@ if not os.path.exists("CMakeLists.txt") or  not os.path.exists("main"):
     exit(1)
 
 try:
+    # sdk_path from project's project.py
     sdk_path = sdk_path
 except Exception:
     sdk_path = os.path.abspath("../../")

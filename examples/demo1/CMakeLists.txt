@@ -1,17 +1,24 @@
 cmake_minimum_required(VERSION 3.5)
 
+set(SDK_ENV_NAME "MY_SDK_PATH")
+
+set(SDK_PATH_ENV $ENV{${SDK_ENV_NAME}})
 
 # Get SDK path
 if(NOT SDK_PATH)
     get_filename_component(SDK_PATH ../../ ABSOLUTE)
-    if(EXISTS $ENV{MY_SDK_PATH})
-        set(SDK_PATH $ENV{MY_SDK_PATH})
+    if(SDK_PATH_ENV)
+        if(EXISTS ${SDK_PATH_ENV})
+            set(SDK_PATH $ENV{${SDK_ENV_NAME}})
+        else()
+            message(FATAL_ERROR "Env variable '${SDK_ENV_NAME}' set, but '$ENV{${SDK_ENV_NAME}}', path not exists")
+        endif()
     endif()
 endif()
 
 # Check SDK Path
 if(NOT EXISTS ${SDK_PATH})
-    message(FATAL_ERROR "SDK path Error, Please set SDK_PATH or MY_SDK_PATH variable")
+    message(FATAL_ERROR "SDK path Error, Please set SDK_PATH or ${SDK_ENV_NAME} variable")
 endif()
 
 # Get Toolchain path
