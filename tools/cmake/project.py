@@ -215,11 +215,18 @@ elif project_args.cmd == "build" or project_args.cmd == "rebuild":
                                "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
         if res != 0:
             exit(1)
-    # TODO: 指定编译线程数 thread_num
     if project_args.verbose:
-        res = subprocess.call(["cmake", "--build", ".", "--target", "all", "--verbose"])
+        if configs["CONFIG_CMAKE_GENERATOR"] == "Unix Makefiles":
+            res = subprocess.call(["cmake", "--build", ".", "--target", "all", "--", "VERBOSE=1"])
+        elif configs["CONFIG_CMAKE_GENERATOR"] == "Ninja":
+            res = subprocess.call(["cmake", "--build", ".", "--target", "all", "--", "-v"])
+        else:
+            res = subprocess.call(["cmake", "--build", ".", "--target", "all"])
     else:
-        res = subprocess.call(["cmake", "--build", ".", "--target", "all"])
+        if configs["CONFIG_CMAKE_GENERATOR"] in ["Unix Makefiles", "Ninja"]:
+            res = subprocess.call(["cmake", "--build", ".", "--target", "all", "--", "-j{}".format(thread_num)])
+        else:
+            res = subprocess.call(["cmake", "--build", ".", "--target", "all"])
     if res != 0:
         exit(1)
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.7.2)
 
 set(SDK_ENV_NAME "MY_SDK_PATH")
 
