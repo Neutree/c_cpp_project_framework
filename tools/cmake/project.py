@@ -215,10 +215,11 @@ elif project_args.cmd == "build" or project_args.cmd == "rebuild":
                                "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
         if res != 0:
             exit(1)
+    # TODO: 指定编译线程数 thread_num
     if project_args.verbose:
         res = subprocess.call(["cmake", "--build", ".", "--target", "all", "--verbose"])
     else:
-        res = subprocess.call(["cmake", "--build", ".", "--parallel", f"{thread_num}", "--target", "all"])
+        res = subprocess.call(["cmake", "--build", ".", "--target", "all"])
     if res != 0:
         exit(1)
 
@@ -282,9 +283,9 @@ elif project_args.cmd == "menuconfig":
     cmd = [sys.executable, tool_path, "--kconfig", os.path.join(sdk_path, "Kconfig")]
     for path in config_files:
         cmd.extend(["--defaults", path])
-    cmd.extend(["--menuconfig", "True", "--env", f"SDK_PATH={sdk_path}",
-                                        "--env", f"PROJECT_PATH={project_path}",
-                                        "--env", f"BUILD_TYPE={build_type}"])
+    cmd.extend(["--menuconfig", "True", "--env", "SDK_PATH={}".format(sdk_path),
+                                        "--env", "PROJECT_PATH={}".format(project_path),
+                                        "--env", "BUILD_TYPE={}".format(build_type)])
     cmd.extend(["--output", "makefile", os.path.join(binary_path, "config", "global_config.mk")])
     cmd.extend(["--output", "cmake", os.path.join(binary_path, "config", "global_config.cmake")])
     cmd.extend(["--output", "header", os.path.join(binary_path, "config", "global_config.h")])
@@ -328,9 +329,9 @@ elif project_args.cmd in cmd_choices:
                 "project_args": project_args,
                 "configs": configs,
             }
-            print(f"\n-------- {project_args.cmd} start ---------")
+            print("\n-------- {} start ---------".format(project_args.cmd))
             ret = tool.main(vars)
-            print(f"-------- {project_args.cmd} end ---------")
+            print("-------- {} end ---------".format(project_args.cmd))
             exit(ret)
 else:
     print("Error: Unknown command")
