@@ -243,7 +243,7 @@ elif project_args.cmd == "clean":
         output, err = p.communicate("")
         res = p.returncode
         if res == 0:
-            print(output.decode())
+            print(output.decode(encoding="gbk" if os.name == "nt" else "utf-8"))
     print("clean complete")
 # distclean    
 elif project_args.cmd == "distclean":
@@ -254,7 +254,7 @@ elif project_args.cmd == "distclean":
         output, err = p.communicate("")
         res = p.returncode
         if res == 0:
-            print(output.decode())
+            print(output.decode(encoding="gbk" if os.name == "nt" else "utf-8"))
         os.chdir("..")
         shutil.rmtree("build")
     if os.path.exists("dist"):
