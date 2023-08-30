@@ -1,0 +1,24 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "rebuild",
+            "command": "python",
+            "args": [
+                "project.py",
+                "rebuild"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}/examples/demo1"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "version": "2.0.0"
+}

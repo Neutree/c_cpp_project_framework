@@ -261,6 +261,31 @@ node demo1.js
 By default we can use `python project.py run` to call [tools/run.py](./tools/run.py) file, and execute the binary file.
 If you want to add commands for your SDK, just create new `py` file in tools directory, write a script and content refer to [tools/run.py](./tools/run.py).
 
+## Online Debugging
+
+### VSCode + GDB Online Debugging
+
+Here take PC with Linux system as an example:
+
+* Add `c_cpp_project_framework` (recommended for the first trial) or project directory to VSCode workspace
+* Copy the [./assets/vscode_local_debug/.vscode](./assets/vscode_local_debug/.vscode) directory to the working directory of the previous step
+* Edit the `cwd` field in `.vscode/launch.json` according to whether `.vscode` is under `c_cpp_project_framework` or under the project directory
+* Press F5 on the keyboard to start debugging
+> Windows is similar, just modify the relevant commands and paths in `.vscode`
+
+### VSCode + gdbserver Debugging on Embedded Device (/Remote Device with Linux System)
+
+Here take PC with Linux system as an example:
+
+* Firstly, Ensure that the remote device has the `gdbserver` program, and the PC has the `gdb-multiarch` program
+* Copy the [./assets/vscode_remote_debug/.vscode](./assets/vscode_remote_debug/.vscode) directory to the project directory
+* Edit the `launch.json` and `build_run_gdbserver.sh` files, modify the paths and commands inside, as well as the username, etc.
+> It is recommended to add the PC's ssh key to the `~/.ssh/authorized_keys` file of the remote device first, so you don't need to enter a password.
+* The `build_run_gdbserver.sh` script needs to be executed every time you debug, and then press F5 in VSCode to start debugging
+> The script will compile the project, then copy the executable file to the remote device, and start `gdbserver`.
+> Press F5 to start debugging, VSCode uses GDB to connect to `gdbserver` on the remote device for debugging.
+
+
 ## License
 
 **MIT**， see [LICENSE](./LICENSE)
