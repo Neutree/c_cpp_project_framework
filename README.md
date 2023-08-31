@@ -175,6 +175,19 @@ python3 project.py menuconfig
 python3 project.py build
 ```
 
+## Custom components path
+
+Generally, the common components are placed in the `SDK directory -> components directory`, and the project-specific components are placed in the `project directory`.
+In addition, users can also customize the storage location of their common components by setting the system environment variable `CUSTOM_COMPONENTS_PATH`, for example:
+Linux:
+```
+export CUSTOM_COMPONENTS_PATH=/home/neucrack/my_components
+```
+Windows just add `CUSTOM_COMPONENTS_PATH` variable in the environment variable interface.
+> The name `CUSTOM_COMPONENTS_PATH` can be modified according to your project name or preference in the `project.py` and `CMakeLists.txt` of the project.
+
+Then you can directly use `list(APPEND ADD_REQUIREMENTS component_name)` to reference it in the project component.
+
 ## Debug and Release version
 
 By default, it is compiled in debug version. If you want to release version, you can use the following command:

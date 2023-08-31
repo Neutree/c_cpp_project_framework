@@ -13,6 +13,7 @@ endmenu
 
 menu "Components configuration"
 	osource "${SDK_PATH}/components/*/Kconfig"
+	osource "${CUSTOM_COMPONENTS_PATH}/*/Kconfig"
 	osource "${PROJECT_PATH}/../components/*/Kconfig"
 	osource "${PROJECT_PATH}/*/Kconfig"
 endmenu

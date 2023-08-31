@@ -172,6 +172,19 @@ python3 project.py menuconfig
 python3 project.py build
 ```
 
+## 设置自定义组件库路径
+
+一般来说通用的组件放在 `SDK 目录 -> components 目录`下， 而工程特有的组件放在 `工程目录`下。
+除此之外，用户还可以自定义自己的通用组件的存放位置，通过在系统环境变量设置 `CUSTOM_COMPONENTS_PATH` 来指定自定义组件的存放位置，比如：
+Linux 下：
+```
+export CUSTOM_COMPONENTS_PATH=/home/neucrack/my_components
+```
+Windows 直接在环境变量界面中添加`CUSTOM_COMPONENTS_PATH`变量即可。
+> `CUSTOM_COMPONENTS_PATH`这个名称可以在工程的`project.py`和`CMakeLists.txt`中根据你的项目名称或者喜好修改。
+
+然后就能在工程的组件里面直接通过 `list(APPEND ADD_REQUIREMENTS 组件名)` 来引用了。
+
 ## 调试 (Debug) 版本和发布 (Release) 版本
 
 默认都是以 debug 版本编译，如果要发布版本，可以使用以下命令：

@@ -210,9 +210,12 @@ elif project_args.cmd == "build" or project_args.cmd == "rebuild":
             print("config file path error:{}".format(config_path))
             exit(1)
         print("-- build type: {}".format(build_type))
-        res = subprocess.call(["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"],
+        cmd = ["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"],
                                "-DCMAKE_BUILD_TYPE={}".format(build_type),
-                               "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
+                               "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."]
+        if custom_components_path:
+            cmd.insert(4, "-DCUSTOM_COMPONENTS_PATH={}".format(custom_components_path))
+        res = subprocess.call(cmd)
         if res != 0:
             exit(1)
     if project_args.verbose:
@@ -274,9 +277,12 @@ elif project_args.cmd == "menuconfig":
         if not os.path.exists(config_path):
             print("config file path error:{}".format(config_path))
             exit(1)
-        res = subprocess.call(["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"], 
+        cmd = ["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"], 
                                "-DCMAKE_BUILD_TYPE={}".format(build_type),
-                               "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."])
+                               "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."]
+        if custom_components_path:
+            cmd.insert(4, "-DCUSTOM_COMPONENTS_PATH={}".format(custom_components_path))
+        res = subprocess.call(cmd)
         if res != 0:
             exit(1)
     # res = subprocess.call(["cmake", "--build", ".", "--parallel", "1", "--target", "menuconfig"])

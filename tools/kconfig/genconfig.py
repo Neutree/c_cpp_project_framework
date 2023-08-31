@@ -65,10 +65,10 @@ def write_header(kconfig, filename, gui):
     build_type = os.environ.get("BUILD_TYPE", "debug").lower()
     if build_type in ["release", "minsizerel", "relwithdebinfo"]:
         print("-- build type:{}, write RELEASE definition to c header".format(build_type))
-        new += "#define RELEASE 1\n"
+        new += "#define RELEASE 1\n#define DEBUG 0\n"
     else:
         print("-- build type:{}, write DEBUG definition to c header".format(build_type))
-        new += "#define DEBUG 1\n"
+        new += "#define DEBUG 1\n#define RELEASE 0\n"
     if old == new:
         print("-- c header file not changed, skip write")
         return

@@ -241,6 +241,10 @@ macro(project name)
 
     # Find components in SDK's components folder, register components
     find_components(components_dirs components_kconfig_files kconfig_defaults_files_args found_main ${SDK_PATH}/components/*)
+    # Find components in custom components folder, register components
+    if(CUSTOM_COMPONENTS_PATH)
+        find_components(components_dirs components_kconfig_files kconfig_defaults_files_args found_main ${CUSTOM_COMPONENTS_PATH}/*)
+    endif()
     # Find components in projects' shared components folder, register components
     find_components(components_dirs components_kconfig_files kconfig_defaults_files_args found_main ${PROJECT_SOURCE_DIR}/../components/*)
     # Find components in project folder
@@ -283,6 +287,7 @@ macro(project name)
                             --menuconfig False
                             --env "SDK_PATH=${SDK_PATH}"
                             --env "PROJECT_PATH=${PROJECT_SOURCE_DIR}"
+                            --env "CUSTOM_COMPONENTS_PATH=${CUSTOM_COMPONENTS_PATH}"
                             --env "BUILD_TYPE=${CMAKE_BUILD_TYPE}"
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
@@ -294,6 +299,7 @@ macro(project name)
                             --menuconfig True
                             --env "SDK_PATH=${SDK_PATH}"
                             --env "PROJECT_PATH=${PROJECT_SOURCE_DIR}"
+                            --env "CUSTOM_COMPONENTS_PATH=${CUSTOM_COMPONENTS_PATH}"
                             --env "BUILD_TYPE=${CMAKE_BUILD_TYPE}"
                             --output makefile ${PROJECT_BINARY_DIR}/config/global_config.mk
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
@@ -375,9 +381,9 @@ macro(project name)
 
     # add DEBUG or RELEASE flag globally
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        add_definitions(-DDEBUG=1)
+        add_definitions(-DDEBUG=1 -DRELEASE=0)
     else()
-        add_definitions(-DRELEASE=1)
+        add_definitions(-DRELEASE=1 -DDEBUG=0)
     endif()
 
     # Add dependence: update configfile, append time and git info for global config header file
