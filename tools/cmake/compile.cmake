@@ -281,7 +281,7 @@ macro(project name)
     message(STATUS "python command: ${python}, version: ${python_info_str}")
     string(REPLACE ";" " " components_kconfig_files "${kconfig_defaults_files_args}")
     string(REPLACE ";" " " components_kconfig_files "${components_kconfig_files}")
-    set(generate_config_cmd ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
+    set(generate_config_cmd ${python} -u ${SDK_PATH}/tools/kconfig/genconfig.py
                             --kconfig "${SDK_PATH}/Kconfig"
                             ${kconfig_defaults_files_args}
                             --menuconfig False
@@ -293,7 +293,7 @@ macro(project name)
                             --output cmake  ${PROJECT_BINARY_DIR}/config/global_config.cmake
                             --output header ${PROJECT_BINARY_DIR}/config/global_config.h
                             )
-    set(generate_config_cmd2 ${python}  ${SDK_PATH}/tools/kconfig/genconfig.py
+    set(generate_config_cmd2 ${python} -u ${SDK_PATH}/tools/kconfig/genconfig.py
                             --kconfig "${SDK_PATH}/Kconfig"
                             ${kconfig_defaults_files_args}
                             --menuconfig True

@@ -68,7 +68,7 @@ project_parser.add_argument('--toolchain-prefix',
                         metavar='PREFIX',
                         default="")
 project_parser.add_argument('--config_file',
-                        help='config file path, e.g. config_defaultd.mk',
+                        help='config file path, e.g. config_defaults.mk',
                         metavar='PATH',
                         default="{}/config_defaults.mk".format(project_path))
 project_parser.add_argument('--verbose',
@@ -270,21 +270,21 @@ elif project_args.cmd == "menuconfig":
         os.mkdir("build")
     os.chdir("build")
     binary_path = os.path.abspath(os.getcwd())
-    if not os.path.exists("build/config/global_config.mk"):
-        if not os.path.isabs(project_args.config_file):
-            project_args.config_file = os.path.join(project_path, project_args.config_file)
-        config_path = os.path.abspath(project_args.config_file)
-        if not os.path.exists(config_path):
-            print("config file path error:{}".format(config_path))
-            exit(1)
-        cmd = ["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"], 
-                               "-DCMAKE_BUILD_TYPE={}".format(build_type),
-                               "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."]
-        if custom_components_path:
-            cmd.insert(4, "-DCUSTOM_COMPONENTS_PATH={}".format(custom_components_path))
-        res = subprocess.call(cmd)
-        if res != 0:
-            exit(1)
+    # if not os.path.exists("build/config/global_config.mk"):
+    #     if not os.path.isabs(project_args.config_file):
+    #         project_args.config_file = os.path.join(project_path, project_args.config_file)
+    #     config_path = os.path.abspath(project_args.config_file)
+    #     if not os.path.exists(config_path):
+    #         print("config file path error:{}".format(config_path))
+    #         exit(1)
+    #     cmd = ["cmake", "-G", configs["CONFIG_CMAKE_GENERATOR"],
+    #                            "-DCMAKE_BUILD_TYPE={}".format(build_type),
+    #                            "-DDEFAULT_CONFIG_FILE={}".format(config_path),  ".."]
+    #     if custom_components_path:
+    #         cmd.insert(4, "-DCUSTOM_COMPONENTS_PATH={}".format(custom_components_path))
+    #     res = subprocess.call(cmd)
+    #     if res != 0:
+    #         exit(1)
     # res = subprocess.call(["cmake", "--build", ".", "--parallel", "1", "--target", "menuconfig"])
     # when use Ninja, menuconfig will not work, so use python script instead, need help here, PR is welcome
     tool_path = os.path.join(sdk_path, "tools/kconfig/genconfig.py")
@@ -293,15 +293,16 @@ elif project_args.cmd == "menuconfig":
         exit(1)
     # get default files
     config_files = get_config_files(project_args.config_file, sdk_path, project_path)
+    config_out_path = os.path.join(binary_path, "config")
     cmd = [sys.executable, tool_path, "--kconfig", os.path.join(sdk_path, "Kconfig")]
     for path in config_files:
         cmd.extend(["--defaults", path])
     cmd.extend(["--menuconfig", "True", "--env", "SDK_PATH={}".format(sdk_path),
                                         "--env", "PROJECT_PATH={}".format(project_path),
                                         "--env", "BUILD_TYPE={}".format(build_type)])
-    cmd.extend(["--output", "makefile", os.path.join(binary_path, "config", "global_config.mk")])
-    cmd.extend(["--output", "cmake", os.path.join(binary_path, "config", "global_config.cmake")])
-    cmd.extend(["--output", "header", os.path.join(binary_path, "config", "global_config.h")])
+    cmd.extend(["--output", "makefile", os.path.join(config_out_path, "global_config.mk")])
+    cmd.extend(["--output", "cmake", os.path.join(config_out_path, "global_config.cmake")])
+    cmd.extend(["--output", "header", os.path.join(config_out_path, "global_config.h")])
     res = subprocess.call(cmd)
     if res != 0:
         exit(1)
