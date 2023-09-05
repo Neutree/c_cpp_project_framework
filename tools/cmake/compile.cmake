@@ -412,7 +412,7 @@ macro(project name)
     # Call CMakeLists.txt
     foreach(component_dir ${component_dirs_sorted})
         get_filename_component(base_dir ${component_dir} NAME)
-        add_subdirectory(${component_dir} ${base_dir})
+        add_subdirectory(${component_dir} ${base_dir} EXCLUDE_FROM_ALL)
         if(TARGET ${base_dir})
             add_dependencies(${base_dir} update_build_info) # add build info dependence
         else()
