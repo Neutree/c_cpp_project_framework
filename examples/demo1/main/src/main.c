@@ -21,7 +21,11 @@
 
 int main()
 {
-    printf("hello\n");
+#if DEBUG
+    printf("!!! DEBUG !!!\n");
+#elif RELEASE
+    printf("!!! RELEASE !!!\n");
+#endif
     test();
     test1();
 #if CONFIG_COMPONENT2_ENABLED
