@@ -11,9 +11,12 @@ menu "Toolchain configuration"
 		default ""
 endmenu
 
-menu "Components configuration"
+menu "SDK Components Configuration"
 	osource "${SDK_PATH}/components/*/Kconfig"
 	osource "${CUSTOM_COMPONENTS_PATH}/*/Kconfig"
+endmenu
+menu "Project Components Configuration"
 	osource "${PROJECT_PATH}/../components/*/Kconfig"
 	osource "${PROJECT_PATH}/*/Kconfig"
+	osource "${PROJECT_PATH}/components/*/Kconfig"
 endmenu

@@ -269,8 +269,8 @@ node demo1.js
 
 ## 增加新的命令
 
-比如默认使用 `python project.py run` 命令会调用`tools/run.py`脚本来执行构建出来的可执行文件。
-如果你需要给你的 SDK 增加命令，只需要创建一个新的文件，参考[tools/run.py](./tools/run.py)文件的写法即可
+比如默认使用 `python project.py run` 命令会调用`tools/cmds/run.py`脚本来执行构建出来的可执行文件。
+如果你需要给你的 SDK 增加命令，只需要创建一个新的文件，参考[tools/cmds/run.py](./tools/cmds/run.py)文件的写法即可
 
 ## 在线调试
 

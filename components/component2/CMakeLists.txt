@@ -25,6 +25,13 @@ if(CONFIG_COMPONENT2_ENABLED)
 
     ###### Add required/dependent components ######
     list(APPEND ADD_REQUIREMENTS component1)
+    #
+    # list(APPEND ADD_FILE_DEPENDS include/axx.h)
+    # set_property(SOURCE ${python_h_path} PROPERTY GENERATED 1)
+    # add_custom_command(OUTPUT include/axx.h
+    #             COMMAND echo "" > include/axx.h
+    #             COMMENT "Generating axx.h ..."
+    #         )
     ###############################################
 
     ###### Add link search path for requirements/libs ######

@@ -271,8 +271,8 @@ node demo1.js
 
 ## Add command
 
-By default we can use `python project.py run` to call [tools/run.py](./tools/run.py) file, and execute the binary file.
-If you want to add commands for your SDK, just create new `py` file in tools directory, write a script and content refer to [tools/run.py](./tools/run.py).
+By default we can use `python project.py run` to call [tools/cmds/run.py](./tools/run.py) file, and execute the binary file.
+If you want to add commands for your SDK, just create new `py` file in tools directory, write a script and content refer to [tools/cmds/run.py](./tools/cmds/run.py).
 
 ## Online Debugging
 

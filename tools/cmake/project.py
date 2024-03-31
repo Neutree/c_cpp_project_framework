@@ -36,7 +36,7 @@ if project_name == "":
     exit(1)
 
 # find extra tools
-tools_dir = os.path.join(sdk_path, "tools")
+tools_dir = os.path.join(sdk_path, "tools", "cmds")
 sys.path.insert(1, tools_dir)
 # find all .py files in tools dir
 extra_tools_names = []

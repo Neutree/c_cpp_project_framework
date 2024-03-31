@@ -30,6 +30,13 @@ endif()
 if(CONFIG_COMPONENT3_ENABLED)
     list(APPEND ADD_REQUIREMENTS component3)
 endif()
+#
+# list(APPEND ADD_FILE_DEPENDS include/axx.h)
+# set_property(SOURCE ${python_h_path} PROPERTY GENERATED 1)
+# add_custom_command(OUTPUT include/axx.h
+#             COMMAND echo "" > include/axx.h
+#             COMMENT "Generating axx.h ..."
+#         )
 ###############################################
 
 ###### Add link search path for requirements/libs ######
@@ -41,6 +48,12 @@ endif()
 
 ############ Add static libs ##################
 # list(APPEND ADD_STATIC_LIB "lib/libtest.a")
+###############################################
+
+############ Add dynamic libs ##################
+# list(APPEND ADD_DYNAMIC_LIB "lib/arch/v831/libmaix_nn.so"
+#                             "lib/arch/v831/libmaix_cam.so"
+# )
 ###############################################
 
 #### Add compile option for this component ####

@@ -96,12 +96,19 @@ function(register_component)
 
     # Add definitions public
     foreach(difinition ${ADD_DEFINITIONS})
-        target_compile_options(${component_name} PUBLIC ${difinition})
+        if(${include_type} STREQUAL INTERFACE)
+            target_compile_options(${component_name} INTERFACE ${difinition})
+            target_link_options(${component_name} INTERFACE ${difinition})
+        else()
+            target_compile_options(${component_name} PUBLIC ${difinition})
+            target_link_options(${component_name} PUBLIC ${difinition})
+        endif()
     endforeach()
 
     # Add definitions private
     foreach(difinition ${ADD_DEFINITIONS_PRIVATE})
         target_compile_options(${component_name} PRIVATE ${difinition})
+        target_link_options(${component_name} PRIVATE ${difinition})
     endforeach()
 
     # Add lib search path
@@ -161,28 +168,43 @@ function(register_component)
 
     # Add requirements
     target_link_libraries(${component_name} ${include_type} ${ADD_REQUIREMENTS})
+
+    # Add file depends
+    if(ADD_FILE_DEPENDS)
+        add_custom_target(${component_name}_file_depends DEPENDS ${ADD_FILE_DEPENDS})
+        add_dependencies(${component_name} ${component_name}_file_depends)
+    endif()
 endfunction()
 
 function(is_path_component ret param_path)
-    set(res 1)
     get_filename_component(abs_dir ${param_path} ABSOLUTE)
 
     if(NOT IS_DIRECTORY "${abs_dir}")
-        set(res 0)
+        set(${ret} 0 PARENT_SCOPE)
+        return()
     endif()
 
     get_filename_component(base_dir ${abs_dir} NAME)
     string(SUBSTRING "${base_dir}" 0 1 first_char)
 
-    if(NOT first_char STREQUAL ".")
-        if(NOT EXISTS "${abs_dir}/CMakeLists.txt")
-            set(res 0)
-        endif()
-    else()
-        set(res 0)
+    if(first_char STREQUAL ".")
+        set(${ret} 0 PARENT_SCOPE)
+        return()
+    endif()
+    if(NOT EXISTS "${abs_dir}/CMakeLists.txt")
+        set(${ret} 0 PARENT_SCOPE)
+        return()
     endif()
 
-    set(${ret} ${res} PARENT_SCOPE)
+    # check if register_component in CMakeLists.txt
+    file(READ "${abs_dir}/CMakeLists.txt" content)
+    string(FIND "${content}" "register_component" find_res)
+    if(find_res EQUAL -1)
+        set(${ret} 0 PARENT_SCOPE)
+        return()
+    endif()
+
+    set(${ret} 1 PARENT_SCOPE)
 endfunction()
 
 function(find_components componet_dirs kconfigs configs found_main find_dir)
@@ -249,6 +271,7 @@ macro(project name)
     find_components(components_dirs components_kconfig_files kconfig_defaults_files_args found_main ${PROJECT_SOURCE_DIR}/../components/*)
     # Find components in project folder
     find_components(components_dirs components_kconfig_files kconfig_defaults_files_args found_main ${PROJECT_SOURCE_DIR}/*)
+    find_components(components_dirs components_kconfig_files kconfig_defaults_files_args found_main ${PROJECT_SOURCE_DIR}/components/*)
 
     if(NOT found_main)
         message(FATAL_ERROR "=================\nCan not find main component(folder) in project folder!!\n=================")
